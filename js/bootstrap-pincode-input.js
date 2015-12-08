@@ -21,7 +21,7 @@
     $.fn.pincodeInput = function(customsettings) {
         return this.each(function() {
             //private variables
-            var $element = $(this);
+            var $element = $(this); 
             var $container;
             
 
