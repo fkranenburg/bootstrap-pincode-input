@@ -60,8 +60,7 @@
        
     	
     	$container = $('<div />').addClass('pincode-input-container');
-    	
-    	debugger;
+
     	for (var i = 0; i < $element.settings.inputs; i++) {
     		$input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo($container);
     		if(i==0){
