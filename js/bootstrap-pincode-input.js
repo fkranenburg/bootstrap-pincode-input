@@ -45,10 +45,18 @@
             };
             
             var buildInputBoxes = function(){
-            	$container = $('<div />').attr('className', 'pincode-input-container');
+            	$container = $('<div />').addClass('pincode-input-container');
             	
             	for (var i = 0; i < $element.settings.inputs; i++) {
-            		$input = $('<input>').attr({'type':'number','min':0,'step':1}).addClass('form-control pincode-input-text').appendTo($container);
+            		$input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo($container);
+            		if(i==0){
+            			$input.addClass('first');
+            		}else if(i==($element.settings.inputs-1)){
+            			$input.addClass('last');
+            		}else{
+            			$input.addClass('mid');
+            		}
+            		
             		$input.on('focus', function(e){
             			$element.settings.focus(e);
                     });
@@ -68,10 +76,10 @@
                     });
             		
             	}
-            	
+
             	//hide original element and place this before it
                 $element.css( "display", "none" );
-                $container.before($element);
+                $($container).insertBefore($($element));
             	
             };
 
@@ -108,7 +116,7 @@
             }
                         
             init();
-    
+
             return this;
         });
     };
