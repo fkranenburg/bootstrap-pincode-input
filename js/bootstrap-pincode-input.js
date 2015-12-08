@@ -79,10 +79,18 @@
     			// after every keystroke we check if all inputs have a value, if yes we call complete callback
     			
     			// on backspace go to previous input box
-    			if($(e.currentTarget).val()!=""){
-    				$(e.currentTarget).next().select();
-					$(e.currentTarget).next().focus();
-				}
+    			if(e.keyCode == 8 || e.keyCode == 48){
+    				// goto previous
+    				$(e.currentTarget).prev().select();
+					$(e.currentTarget).prev().focus();
+    			}else{
+    				if($(e.currentTarget).val()!=""){
+        				$(e.currentTarget).next().select();
+    					$(e.currentTarget).next().focus();
+    				}
+    			}
+    			
+    			
       			
     			if(check()){
     				updateOriginalInput();
