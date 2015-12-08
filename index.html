@@ -15,7 +15,18 @@
 	<script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
     <script>
         $(document).ready(function() {
-            $('.pincode-input').pincodeInput();
+            $('.pincode-input').pincodeInput({complete:function(value, e, errorElement){
+            	
+            	$("#pincode-callback").html("This is the 'complete' callback firing. Current value: " + value);
+            	
+            	// check the code
+            	if(value!="1234"){
+            		$(errorElement).html("The code is not correct. Should be '1234'");
+            	}else{
+            		alert('code is correct!');
+            	}
+            	
+            }});
             
         });
     </script>
@@ -33,7 +44,14 @@
                     <br/>
                     <br/>
                     <input type="text" class="pincode-input" placeHolder="test" >
-
+            		<br/>
+                    <br/>
+                    <a href="#" onclick="javascript:$('.pincode-input').pincodeInput('focus')">focus</a><br/>
+                    <a href="#" onclick="javascript:$('.pincode-input').pincodeInput('clear')">clear</a><br/>
+                    <br/>
+                    <br/>
+                    complete callback:
+                    <span id="pincode-callback"></span>
                 </div>
             </div>
         </div>
