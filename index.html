@@ -28,6 +28,11 @@
             	
             }});
             
+            $('#digits6').pincodeInput({inputs:6,complete:function(value, e, errorElement){
+            	$("#pincode-callback").html("Complete callback from 6-digit test: Current value: " + value);
+            }});
+            
+            
         });
     </script>
     </head>
@@ -39,19 +44,35 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-
-                    <h2>Basic Example (normal input box)</h2>
+                	<p>
+                		This simple jQuery widget is created by Ferry Kranenburg.<br/>
+                		You need a input type text and Bootstrap.<br/>
+                		After entering a pincode the value will be updated in the original textbox.<br/>
+                		<br/>
+                		It supports a callback after all digits are entered and backspace is allowed.
+                		
+                		 
+                	</p>
+             		<br/>
+                    <br/>
+                    <h4>Basic Example (normal input box)</h4>
                     <br/>
                     <br/>
-                    <input type="text" class="pincode-input" placeHolder="test" >
+                    <input type="text" class="pincode-input"  >
             		<br/>
                     <br/>
+                    <b>Methods:</b><br/>
                     <a href="#" onclick="javascript:$('.pincode-input').pincodeInput('focus')">focus</a><br/>
                     <a href="#" onclick="javascript:$('.pincode-input').pincodeInput('clear')">clear</a><br/>
                     <br/>
                     <br/>
                     complete callback:
                     <span id="pincode-callback"></span>
+                    <h4>6-digits example</h4>
+                    <br/>
+                    <br/>
+                    <input type="text" id="digits6"  >
+            		<br/>
                 </div>
             </div>
         </div>
