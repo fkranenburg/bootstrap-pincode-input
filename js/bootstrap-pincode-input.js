@@ -140,6 +140,16 @@
 		        	$(this.element).css( "display", "none" );
 		            this._container.insertBefore(this.element);
 				},
+				enable:function(){
+					 $('.pincode-input-text',this._container).each(function( index, value ) {
+								$(value).prop('disabled', false);
+					});
+				},
+				disable:function(){
+					 $('.pincode-input-text',this._container).each(function( index, value ) {
+								$(value).prop('disabled', true);
+					});
+				},
 				focus:function(){
 					$('.pincode-input-text',this._container).first().select().focus();
 				},
