@@ -70,12 +70,12 @@
 
 		        	this._container = $('<div />').addClass('pincode-input-container');
 
-							var currentValue = [];
-							// If we do not hide digits, we need to include the current value of the input box
-							// This will only work if the current value is not longer than the number of input boxes.
-							if( this.settings.hideDigits == false && $(this.element).val() !=""){
-								currentValue = $(this.element).val().split("");
-							}
+					var currentValue = [];
+					// If we do not hide digits, we need to include the current value of the input box
+					// This will only work if the current value is not longer than the number of input boxes.
+					if( this.settings.hideDigits == false && $(this.element).val() !=""){
+						currentValue = $(this.element).val().split("");
+					}
 
 		        	for (var i = 0; i <  this.settings.inputs; i++) {
 		        		var input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo(this._container);
@@ -83,9 +83,9 @@
 									// hide digits
 		        			input.attr('type','password');
 		        		}else{
-									// show digits, also include default value
-									input.val(currentValue[i]);
-								}
+							// show digits, also include default value
+							input.val(currentValue[i]);
+						}
 
 		        		if(i==0){
 		        			input.addClass('first');
@@ -95,31 +95,36 @@
 		        			input.addClass('mid');
 		        		}
 
+		        		input.on('focus',function(e){
+		        			 this.select();  //automatically select current value
+		        		});
+
 		        		input.on('keydown', $.proxy(function(e){
 		        			 this.settings.keydown(e);
 		                },this));
 
 		        		input.on('keyup', $.proxy(function(e){
-		        			// after every keystroke we check if all inputs have a value, if yes we call complete callback
+				        			// after every keystroke we check if all inputs have a value, if yes we call complete callback
 
-		        			// on backspace go to previous input box
-		        			if(e.keyCode == 8 || e.keyCode == 48){
-		        				// goto previous
-		        				$(e.currentTarget).prev().select();
-		    					$(e.currentTarget).prev().focus();
-		        			}else{
-		        				if($(e.currentTarget).val()!=""){
-		            				$(e.currentTarget).next().select();
-		        					$(e.currentTarget).next().focus();
-		        				}
-		        			}
+				        			// on backspace go to previous input box
+				        			if(e.keyCode == 8 || e.keyCode == 48){
+				        				// goto previous
+				        				$(e.currentTarget).prev().select();
+				    					$(e.currentTarget).prev().focus();
+				        			}else{
+				        				if($(e.currentTarget).val()!=""){
+				            				$(e.currentTarget).next().select();
+				        					$(e.currentTarget).next().focus();
+				        				}
+				        			}
+				        			
+				        			// update original input box
+				        			this.updateOriginalInput();
 
-
-		        			if(this.check()){
-		        				this.updateOriginalInput();
-		        				this.settings.complete($(this.element).val(), e, this._error);
-		        			}
-		                },this));
+				        			if(this.check()){
+				        				this.settings.complete($(this.element).val(), e, this._error);
+				        			}
+		        		},this));
 
 		        	}
 
