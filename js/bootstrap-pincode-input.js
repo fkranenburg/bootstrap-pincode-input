@@ -1,6 +1,6 @@
 /* =========================================================
  * bootstrap-pincode-input.js
- * 
+ *
  * =========================================================
  * Created by Ferry Kranenburg
  *
@@ -32,7 +32,7 @@
 		    		//value = the entered code
 		    		//e = last keyup event
 		    		//errorElement = error span next to to this, fill with html e.g. : $(errorElement).html("Code not correct");
-		    	}	
+		    	}
 		    };
 
 		// The actual plugin constructor
@@ -63,19 +63,30 @@
 		        			isComplete = false;
 		        		}
 		        	});
-		            	
+
 		        	return isComplete;
-		        },				
+		        },
 				buildInputBoxes: function () {
-					
+
 		        	this._container = $('<div />').addClass('pincode-input-container');
+
+							var currentValue = [];
+							// If we do not hide digits, we need to include the current value of the input box
+							// This will only work if the current value is not longer than the number of input boxes.
+							if( this.settings.hideDigits == false && $(this.element).val() !=""){
+								currentValue = $(this.element).val().split("");
+							}
 
 		        	for (var i = 0; i <  this.settings.inputs; i++) {
 		        		var input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo(this._container);
-		        		if( this.settings.hideDigits){
+		        		if(this.settings.hideDigits){
+									// hide digits
 		        			input.attr('type','password');
-		        		}
-		        		
+		        		}else{
+									// show digits, also include default value
+									input.val(currentValue[i]);
+								}
+
 		        		if(i==0){
 		        			input.addClass('first');
 		        		}else if(i==(this.settings.inputs-1)){
@@ -90,7 +101,7 @@
 
 		        		input.on('keyup', $.proxy(function(e){
 		        			// after every keystroke we check if all inputs have a value, if yes we call complete callback
-		        			
+
 		        			// on backspace go to previous input box
 		        			if(e.keyCode == 8 || e.keyCode == 48){
 		        				// goto previous
@@ -102,16 +113,16 @@
 		        					$(e.currentTarget).next().focus();
 		        				}
 		        			}
-		        			
-		        			          			
+
+
 		        			if(this.check()){
 		        				this.updateOriginalInput();
 		        				this.settings.complete($(this.element).val(), e, this._error);
 		        			}
 		                },this));
-		        		
+
 		        	}
-		        	
+
 		        	// error box
 		        	this._error = $('<div />').addClass('text-danger pincode-input-error').appendTo(this._container);
 
@@ -128,7 +139,7 @@
 		         	});
 		         	this.updateOriginalInput();
 				}
-				
+
 		});
 
 		// A really lightweight plugin wrapper around the constructor,
