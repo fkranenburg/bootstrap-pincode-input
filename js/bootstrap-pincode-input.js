@@ -25,6 +25,7 @@
     
     var defaults = {
     	inputs:4,									    // 4 input boxes = code of 4 digits long
+    	hideDigits:true,								// hide digits
     	keydown : function(e){},
         complete : function(value, e, errorElement){// callback when all inputs are filled in (keyup event)
     		//value = the entered code
@@ -63,6 +64,10 @@
 
     	for (var i = 0; i < $element.settings.inputs; i++) {
     		$input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo($container);
+    		if($element.settings.hideDigits){
+    			$input.attr('type','password');
+    		}
+    		
     		if(i==0){
     			$input.addClass('first');
     		}else if(i==($element.settings.inputs-1)){

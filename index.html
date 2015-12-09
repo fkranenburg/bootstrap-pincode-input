@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
     <script>
         $(document).ready(function() {
-            $('.pincode-input').pincodeInput({complete:function(value, e, errorElement){
+            $('#pincode-input1').pincodeInput({complete:function(value, e, errorElement){
             	
             	$("#pincode-callback").html("This is the 'complete' callback firing. Current value: " + value);
             	
@@ -28,7 +28,7 @@
             	
             }});
             
-            $('#digits6').pincodeInput({inputs:6,complete:function(value, e, errorElement){
+            $('#pincode-input2').pincodeInput({inputs:6,complete:function(value, e, errorElement){
             	$("#pincode-callback").html("Complete callback from 6-digit test: Current value: " + value);
             }});
             
@@ -50,20 +50,19 @@
                 		After entering a pincode the value will be updated in the original textbox.<br/>
                 		<br/>
                 		It supports a callback after all digits are entered and backspace is allowed.
-                		
-                		 
+
                 	</p>
              		<br/>
                     <br/>
                     <h4>Basic Example (normal input box)</h4>
                     <br/>
                     <br/>
-                    <input type="text" class="pincode-input"  >
+                    <input type="text" id="pincode-input1"  >
             		<br/>
                     <br/>
                     <b>Methods:</b><br/>
-                    <a href="#" onclick="javascript:$('.pincode-input').pincodeInput('focus')">focus</a><br/>
-                    <a href="#" onclick="javascript:$('.pincode-input').pincodeInput('clear')">clear</a><br/>
+                    <a href="#" onclick="javascript:$('#pincode-input1').pincodeInput('focus')">focus</a><br/>
+                    <a href="#" onclick="javascript:$('#pincode-input1').pincodeInput('clear')">clear</a><br/>
                     <br/>
                     <br/>
                     complete callback:
@@ -71,7 +70,7 @@
                     <h4>6-digits example</h4>
                     <br/>
                     <br/>
-                    <input type="text" id="digits6"  >
+                    <input type="text" id="pincode-input2"  >
             		<br/>
                 </div>
             </div>
