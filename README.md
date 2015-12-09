@@ -13,7 +13,7 @@ User can also use the backspace to remove the code
 
 A demo can be found at [fkranenburg.github.io/bootstrap-pincode-input][site]
 
-[site]: fkranenburg.github.io/bootstrap-pincode-input
+[site]: http://fkranenburg.github.io/bootstrap-pincode-input
 
 
 ![screenshot](https://raw.github.com/fkranenburg/bootstrap-pincode-input/master/example.jpg)
