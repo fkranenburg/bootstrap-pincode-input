@@ -14,7 +14,7 @@
 	border-radius:0px;
 	border-left-width:0px;
 }
-.pincode-input-text {
+.pincode-input-text, .form-control.pincode-input-text {
 	width:35px;
 	float:left;
 }
