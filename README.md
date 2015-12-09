@@ -16,4 +16,4 @@ A demo can be found at [fkranenburg.github.io/bootstrap-pincode-input][site]
 [site]: fkranenburg.github.io/bootstrap-pincode-input
 
 
-![screenshot](https://raw.github.com/longbill/jquery-date-range-picker/master/preview.jpg)
+![screenshot](https://raw.github.com/fkranenburg/bootstrap-pincode-input/master/example.jpg)
