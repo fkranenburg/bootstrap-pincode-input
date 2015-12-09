@@ -17,3 +17,6 @@ A demo can be found at [fkranenburg.github.io/bootstrap-pincode-input][site]
 
 
 ![screenshot](https://raw.github.com/fkranenburg/bootstrap-pincode-input/master/example.jpg)
+
+
+Created by Ferry Kranenburg
