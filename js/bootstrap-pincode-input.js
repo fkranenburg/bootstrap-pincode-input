@@ -76,6 +76,11 @@
 					if( this.settings.hideDigits == false && $(this.element).val() !=""){
 						currentValue = $(this.element).val().split("");
 					}
+					
+					// make sure this is the first password field here
+					if(this.settings.hideDigits){
+						$('<input>').attr({'type':'password','id':'preventautofill','autocomplete':'off'}).css("display", "none").appendTo(this._container);
+					}
 
 		        	for (var i = 0; i <  this.settings.inputs; i++) {
 		        		var input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo(this._container);
