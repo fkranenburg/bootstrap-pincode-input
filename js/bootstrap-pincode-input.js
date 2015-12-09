@@ -17,145 +17,128 @@
  * limitations under the License.
  * ========================================================= */
 
-(function($) {
-    //private variables
-    var $element; 
-    var $container;
-    var $error;
-    
-    var defaults = {
-    	inputs:4,									    // 4 input boxes = code of 4 digits long
-    	hideDigits:true,								// hide digits
-    	keydown : function(e){},
-        complete : function(value, e, errorElement){// callback when all inputs are filled in (keyup event)
-    		//value = the entered code
-    		//e = last keyup event
-    		//errorElement = error span next to to this, fill with html e.g. : $(errorElement).html("Code not correct");
-    	}	
-    };
-    
-    
-    var methods = {
-        init : function(options) {
-        	 $element = $(this);
-        	 $element.settings = $.extend({}, defaults, options);
-        	 
-        	 buildInputBoxes();   
-        },
-        focus: function() {
-        	$('input.pincode-input-text',$container).first().select().focus();
-        },
-        clear:function(){
-        	$('input.pincode-input-text',$container).each(function( index, value ) {
-        		$(value).val("");
-        	});
-        	updateOriginalInput();
-        }
-    };
+;(function ( $, window, document, undefined ) {
+
+	"use strict";
 
 
-    //Private Methods
+		// Create the defaults once
+		var pluginName = "pincodeInput";
+		var defaults = {
+		    	inputs:4,									    // 4 input boxes = code of 4 digits long
+		    	hideDigits:true,								// hide digits
+		    	keydown : function(e){},
+		        complete : function(value, e, errorElement){// callback when all inputs are filled in (keyup event)
+		    		//value = the entered code
+		    		//e = last keyup event
+		    		//errorElement = error span next to to this, fill with html e.g. : $(errorElement).html("Code not correct");
+		    	}	
+		    };
 
-    var buildInputBoxes = function(){
-        //public variables
-       
-    	
-    	$container = $('<div />').addClass('pincode-input-container');
+		// The actual plugin constructor
+		function Plugin ( element, options ) {
+				this.element = element;
+				this.settings = $.extend( {}, defaults, options );
+				this._defaults = defaults;
+				this._name = pluginName;
+				this.init();
+		}
 
-    	for (var i = 0; i < $element.settings.inputs; i++) {
-    		$input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo($container);
-    		if($element.settings.hideDigits){
-    			$input.attr('type','password');
-    		}
-    		
-    		if(i==0){
-    			$input.addClass('first');
-    		}else if(i==($element.settings.inputs-1)){
-    			$input.addClass('last');
-    		}else{
-    			$input.addClass('mid');
-    		}
+		// Avoid Plugin.prototype conflicts
+		$.extend(Plugin.prototype, {
+				init: function () {
+					this.buildInputBoxes();
+				},
+		        updateOriginalInput:function(){
+		        	var newValue = "";
+		        	$('.pincode-input-text',this._container).each(function( index, value ) {
+		        		newValue += $(value).val().toString();
+		        	});
+		        	$(this.element).val(newValue);
+		        },
+		        check: function(){
+		        	var isComplete = true;
+		        	$('.pincode-input-text',this._container).each(function( index, value ) {
+		        		if(!$(value).val()){
+		        			isComplete = false;
+		        		}
+		        	});
+		            	
+		        	return isComplete;
+		        },				
+				buildInputBoxes: function () {
+					
+		        	this._container = $('<div />').addClass('pincode-input-container');
 
-    		$input.on('keydown', function(e){
-    			$element.settings.keydown(e);
-            });
+		        	for (var i = 0; i <  this.settings.inputs; i++) {
+		        		var input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo(this._container);
+		        		if( this.settings.hideDigits){
+		        			input.attr('type','password');
+		        		}
+		        		
+		        		if(i==0){
+		        			input.addClass('first');
+		        		}else if(i==(this.settings.inputs-1)){
+		        			input.addClass('last');
+		        		}else{
+		        			input.addClass('mid');
+		        		}
 
-    		$input.on('keyup', function(e){
-    			// after every keystroke we check if all inputs have a value, if yes we call complete callback
-    			
-    			// on backspace go to previous input box
-    			if(e.keyCode == 8 || e.keyCode == 48){
-    				// goto previous
-    				$(e.currentTarget).prev().select();
-					$(e.currentTarget).prev().focus();
-    			}else{
-    				if($(e.currentTarget).val()!=""){
-        				$(e.currentTarget).next().select();
-    					$(e.currentTarget).next().focus();
-    				}
-    			}
-    			
-    			
-      			
-    			if(check()){
-    				updateOriginalInput();
-    				$element.settings.complete($($element).val(), e, $error);
-    			}
-            });
-    		
-    	}
-    	
-    	// error box
-    	$error = $('<div />').addClass('text-danger pincode-input-error').appendTo($container);
+		        		input.on('keydown', $.proxy(function(e){
+		        			 this.settings.keydown(e);
+		                },this));
 
-    	//hide original element and place this before it
-        $element.css( "display", "none" );
-        $($container).insertBefore($($element));
-        $element.attr('_pincodeContainer', $container);
-        $element.attr('_pincodeError', $error);
-    	
-    };
+		        		input.on('keyup', $.proxy(function(e){
+		        			// after every keystroke we check if all inputs have a value, if yes we call complete callback
+		        			
+		        			// on backspace go to previous input box
+		        			if(e.keyCode == 8 || e.keyCode == 48){
+		        				// goto previous
+		        				$(e.currentTarget).prev().select();
+		    					$(e.currentTarget).prev().focus();
+		        			}else{
+		        				if($(e.currentTarget).val()!=""){
+		            				$(e.currentTarget).next().select();
+		        					$(e.currentTarget).next().focus();
+		        				}
+		        			}
+		        			
+		        			          			
+		        			if(this.check()){
+		        				this.updateOriginalInput();
+		        				this.settings.complete($(this.element).val(), e, this._error);
+		        			}
+		                },this));
+		        		
+		        	}
+		        	
+		        	// error box
+		        	this._error = $('<div />').addClass('text-danger pincode-input-error').appendTo(this._container);
 
-    var showError = function(){
-    	
-    }
-    var hideError = function(){
-    	
-    }
-    
-    var updateOriginalInput = function(){
-    	var newValue = "";
-    	$('input.pincode-input-text',$container).each(function( index, value ) {
-    		newValue += $(value).val().toString();
-    	});
-    	$($element).val(newValue);
-    }
-    
-    var check = function(){
-    	var isComplete = true;
-    	$('input.pincode-input-text',$container).each(function( index, value ) {
-    		if(!$(value).val()){
-    			isComplete = false;
-    		}
-    	});
-    	
-    	if(isComplete){
-    		hideError();
-    	}else{
-    		showError();
-    	}
-      	            	
-    	return isComplete;
-    }
-                
-    $.fn.pincodeInput = function(methodOrOptions) {
-        if ( methods[methodOrOptions] ) {
-            return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-        } else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
-            // Default to "init"
-            return methods.init.apply( this, arguments );
-        } else {
-            $.error( 'Method ' +  methodOrOptions + ' does not exist on jQuery.pincodeInput' );
-        }    
-    };
-})(jQuery);
+		        	//hide original element and place this before it
+		        	$(this.element).css( "display", "none" );
+		            this._container.insertBefore(this.element);
+				},
+				focus:function(){
+					$('.pincode-input-text',this._container).first().select().focus();
+				},
+				clear:function(){
+					 $('.pincode-input-text',this._container).each(function( index, value ) {
+		         		$(value).val("");
+		         	});
+		         	this.updateOriginalInput();
+				}
+				
+		});
+
+		// A really lightweight plugin wrapper around the constructor,
+		// preventing against multiple instantiations
+		$.fn[ pluginName ] = function ( options ) {
+				return this.each(function() {
+						if ( !$.data( this, "plugin_" + pluginName ) ) {
+								$.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
+						}
+				});
+		};
+
+})( jQuery, window, document );
