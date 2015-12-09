@@ -70,27 +70,29 @@
 
 		        	this._container = $('<div />').addClass('pincode-input-container');
 
-					var currentValue = [];
-					// If we do not hide digits, we need to include the current value of the input box
-					// This will only work if the current value is not longer than the number of input boxes.
-					if( this.settings.hideDigits == false && $(this.element).val() !=""){
-						currentValue = $(this.element).val().split("");
-					}
-					
-					// make sure this is the first password field here
-					if(this.settings.hideDigits){
-						$('<input>').attr({'type':'password','id':'preventautofill','autocomplete':'off'}).css("display", "none").appendTo(this._container);
-					}
+							var currentValue = [];
+							// If we do not hide digits, we need to include the current value of the input box
+							// This will only work if the current value is not longer than the number of input boxes.
+							if( this.settings.hideDigits == false && $(this.element).val() !=""){
+								currentValue = $(this.element).val().split("");
+							}
+
+							// make sure this is the first password field here
+							if(this.settings.hideDigits){
+									this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
+									this._pwfield = $('<input>').attr({'type':'password','id':'preventautofill','autocomplete':'off'}).appendTo(this._pwcontainer);
+							}
 
 		        	for (var i = 0; i <  this.settings.inputs; i++) {
-		        		var input = $('<input>').attr({'type':'text','maxlength':"1"}).addClass('form-control pincode-input-text').appendTo(this._container);
+
+		        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
 		        		if(this.settings.hideDigits){
 									// hide digits
 		        			input.attr('type','password');
 		        		}else{
-							// show digits, also include default value
-							input.val(currentValue[i]);
-						}
+									// show digits, also include default value
+									input.val(currentValue[i]);
+								}
 
 		        		if(i==0){
 		        			input.addClass('first');
@@ -102,11 +104,20 @@
 
 		        		input.on('focus',function(e){
 		        			 this.select();  //automatically select current value
-		        		});
+		            });
 
 		        		input.on('keydown', $.proxy(function(e){
-		        			 this.settings.keydown(e);
-		                },this));
+										if(this._pwfield){
+											// Because we need to prevent password saving by browser
+											// remove the value here and change the type!
+											// we do this every time the user types
+											$(this._pwfield).attr({'type':'text'});
+											$(this._pwfield).val("");
+										}
+
+
+									 this.settings.keydown(e);
+		            },this));
 
 		        		input.on('keyup', $.proxy(function(e){
 				        			// after every keystroke we check if all inputs have a value, if yes we call complete callback
@@ -122,14 +133,14 @@
 				        					$(e.currentTarget).next().focus();
 				        				}
 				        			}
-				        			
-				        			// update original input box
+
+											// update original input box
 				        			this.updateOriginalInput();
 
 				        			if(this.check()){
 				        				this.settings.complete($(this.element).val(), e, this._error);
 				        			}
-		        		},this));
+				        },this));
 
 		        	}
 
