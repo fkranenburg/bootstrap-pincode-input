@@ -70,79 +70,58 @@
 
 		        	this._container = $('<div />').addClass('pincode-input-container');
 
-							var currentValue = [];
-							// If we do not hide digits, we need to include the current value of the input box
-							// This will only work if the current value is not longer than the number of input boxes.
-							if( this.settings.hideDigits == false && $(this.element).val() !=""){
-								currentValue = $(this.element).val().split("");
-							}
+					var currentValue = [];
+					// If we do not hide digits, we need to include the current value of the input box
+					// This will only work if the current value is not longer than the number of input boxes.
+					if( this.settings.hideDigits == false && $(this.element).val() !=""){
+						currentValue = $(this.element).val().split("");
+					}
 
-							// make sure this is the first password field here
-							if(this.settings.hideDigits){
-									this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
-									this._pwfield = $('<input>').attr({'type':'password','id':'preventautofill','autocomplete':'off'}).appendTo(this._pwcontainer);
-							}
+					// make sure this is the first password field here
+					if(this.settings.hideDigits){
+							this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
+							this._pwfield = $('<input>').attr({'type':'password','id':'preventautofill','autocomplete':'off'}).appendTo(this._pwcontainer);
+					}
 
-		        	for (var i = 0; i <  this.settings.inputs; i++) {
-
-		        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
+					if(this._isTouchDevice()){
+						var input = $('<input>').attr({'type':'text','maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text first last').appendTo(this._container);
 		        		if(this.settings.hideDigits){
 									// hide digits
 		        			input.attr('type','password');
 		        		}else{
-									// show digits, also include default value
-									input.val(currentValue[i]);
-								}
+							// show digits, also include default value
+							input.val(currentValue[i]);
+						}
+		        		
+		        		// add events
+		        		this._addEventsToInput(input);
+						
+					}else{
+						// for desktop mode we build one input for each digit
+			        	for (var i = 0; i <  this.settings.inputs; i++) {
 
-		        		if(i==0){
-		        			input.addClass('first');
-		        		}else if(i==(this.settings.inputs-1)){
-		        			input.addClass('last');
-		        		}else{
-		        			input.addClass('mid');
-		        		}
+			        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
+			        		if(this.settings.hideDigits){
+										// hide digits
+			        			input.attr('type','password');
+			        		}else{
+								// show digits, also include default value
+								input.val(currentValue[i]);
+							}
 
-		        		input.on('focus',function(e){
-		        			 this.select();  //automatically select current value
-		            });
+			        		if(i==0){
+			        			input.addClass('first');
+			        		}else if(i==(this.settings.inputs-1)){
+			        			input.addClass('last');
+			        		}else{
+			        			input.addClass('mid');
+			        		}
 
-		        		input.on('keydown', $.proxy(function(e){
-										if(this._pwfield){
-											// Because we need to prevent password saving by browser
-											// remove the value here and change the type!
-											// we do this every time the user types
-											$(this._pwfield).attr({'type':'text'});
-											$(this._pwfield).val("");
-										}
+			        		// add events
+			        		this._addEventsToInput(input);
+			        	}
+					}
 
-
-									 this.settings.keydown(e);
-		            },this));
-
-		        		input.on('keyup', $.proxy(function(e){
-				        			// after every keystroke we check if all inputs have a value, if yes we call complete callback
-
-				        			// on backspace go to previous input box
-				        			if(e.keyCode == 8 || e.keyCode == 48){
-				        				// goto previous
-				        				$(e.currentTarget).prev().select();
-				    					$(e.currentTarget).prev().focus();
-				        			}else{
-				        				if($(e.currentTarget).val()!=""){
-				            				$(e.currentTarget).next().select();
-				        					$(e.currentTarget).next().focus();
-				        				}
-				        			}
-
-											// update original input box
-				        			this.updateOriginalInput();
-
-				        			if(this.check()){
-				        				this.settings.complete($(this.element).val(), e, this._error);
-				        			}
-				        },this));
-
-		        	}
 
 		        	// error box
 		        	this._error = $('<div />').addClass('text-danger pincode-input-error').appendTo(this._container);
@@ -169,7 +148,56 @@
 		         		$(value).val("");
 		         	});
 		         	this.updateOriginalInput();
+				},
+				_isTouchDevice:function(){
+					// I know, sniffing is a really bad idea, but it works 99% of the times
+					if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+					 	return true;
+					}
+				},
+				_addEventsToInput:function(input){
+
+	        		input.on('focus',function(e){
+	        			 this.select();  //automatically select current value
+	        		});
+
+	        		input.on('keydown', $.proxy(function(e){
+							if(this._pwfield){
+								// Because we need to prevent password saving by browser
+								// remove the value here and change the type!
+								// we do this every time the user types
+								$(this._pwfield).attr({'type':'text'});
+								$(this._pwfield).val("");
+							}
+
+
+						 this.settings.keydown(e);
+		            },this));
+
+	        		input.on('keyup', $.proxy(function(e){
+			        	// after every keystroke we check if all inputs have a value, if yes we call complete callback
+
+	        			// on backspace go to previous input box
+	        			if(e.keyCode == 8 || e.keyCode == 48){
+	        				// goto previous
+	        				$(e.currentTarget).prev().select();
+	    					$(e.currentTarget).prev().focus();
+	        			}else{
+	        				if($(e.currentTarget).val()!=""){
+	            				$(e.currentTarget).next().select();
+	        					$(e.currentTarget).next().focus();
+	        				}
+	        			}
+
+								// update original input box
+	        			this.updateOriginalInput();
+
+	        			if(this.check()){
+	        				this.settings.complete($(this.element).val(), e, this._error);
+	        			}
+			        },this));
 				}
+	
 
 		});
 
