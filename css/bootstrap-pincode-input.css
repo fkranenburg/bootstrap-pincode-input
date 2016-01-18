@@ -18,6 +18,11 @@
 	width:35px;
 	float:left;
 }
+.pincode-input-text.mobile{
+	width:100px;
+	border-left-width:1px !important;
+}
+
 .pincode-input-error{
 	clear:both;
 }

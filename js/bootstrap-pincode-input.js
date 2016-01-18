@@ -26,7 +26,7 @@
 		var pluginName = "pincodeInput";
 		var defaults = {
 		    	inputs:4,									    // 4 input boxes = code of 4 digits long
-		    	hideDigits:true,								// hide digits
+		    	hidedigits:true,								// hide digits
 		    	keydown : function(e){},
 		        complete : function(value, e, errorElement){// callback when all inputs are filled in (keyup event)
 		    		//value = the entered code
@@ -58,50 +58,60 @@
 		        },
 		        check: function(){
 		        	var isComplete = true;
+		        	var code = "";
 		        	$('.pincode-input-text',this._container).each(function( index, value ) {
+		        		code += $(value).val().toString();
 		        		if(!$(value).val()){
 		        			isComplete = false;
 		        		}
 		        	});
 
-		        	return isComplete;
+		        	if(this._isTouchDevice()){
+		        		// check if single input has it all
+		        		if(code.length == this.settings.inputs){
+		        			return true;
+		        		}
+		        	}else{
+		        		return isComplete;
+		        	}
+
+
 		        },
 				buildInputBoxes: function () {
-
-		        	this._container = $('<div />').addClass('pincode-input-container');
+		    	this._container = $('<div />').addClass('pincode-input-container');
 
 					var currentValue = [];
 					// If we do not hide digits, we need to include the current value of the input box
 					// This will only work if the current value is not longer than the number of input boxes.
-					if( this.settings.hideDigits == false && $(this.element).val() !=""){
+					if( this.settings.hidedigits == false && $(this.element).val() !=""){
 						currentValue = $(this.element).val().split("");
 					}
 
 					// make sure this is the first password field here
-					if(this.settings.hideDigits){
+					if(this.settings.hidedigits){
 							this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
-							this._pwfield = $('<input>').attr({'type':'password','id':'preventautofill','autocomplete':'off'}).appendTo(this._pwcontainer);
+							this._pwfield = $('<input>').attr({'type':'password','pattern': "[0-9]*", 'inputmode':"numeric",'id':'preventautofill','autocomplete':'off'}).appendTo(this._pwcontainer);
 					}
 
 					if(this._isTouchDevice()){
-						var input = $('<input>').attr({'type':'text','maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text first last').appendTo(this._container);
-		        		if(this.settings.hideDigits){
+						var input = $('<input>').attr({'type':'number','pattern': "[0-9]*", 'inputmode':"numeric",'maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text first last mobile').appendTo(this._container);
+		        		if(this.settings.hidedigits){
 									// hide digits
 		        			input.attr('type','password');
 		        		}else{
 							// show digits, also include default value
 							input.val(currentValue[i]);
 						}
-		        		
+
 		        		// add events
 		        		this._addEventsToInput(input);
-						
+
 					}else{
 						// for desktop mode we build one input for each digit
 			        	for (var i = 0; i <  this.settings.inputs; i++) {
 
-			        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
-			        		if(this.settings.hideDigits){
+			        		var input = $('<input>').attr({'type':'number','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
+			        		if(this.settings.hidedigits){
 										// hide digits
 			        			input.attr('type','password');
 			        		}else{
@@ -177,17 +187,20 @@
 	        		input.on('keyup', $.proxy(function(e){
 			        	// after every keystroke we check if all inputs have a value, if yes we call complete callback
 
-	        			// on backspace go to previous input box
-	        			if(e.keyCode == 8 || e.keyCode == 48){
-	        				// goto previous
-	        				$(e.currentTarget).prev().select();
-	    					$(e.currentTarget).prev().focus();
-	        			}else{
-	        				if($(e.currentTarget).val()!=""){
-	            				$(e.currentTarget).next().select();
-	        					$(e.currentTarget).next().focus();
-	        				}
+	        			if(!this._isTouchDevice()){
+		        			// on backspace go to previous input box
+		        			if(e.keyCode == 8 || e.keyCode == 48){
+		        				// goto previous
+		        				$(e.currentTarget).prev().select();
+		    					$(e.currentTarget).prev().focus();
+		        			}else{
+		        				if($(e.currentTarget).val()!=""){
+		            				$(e.currentTarget).next().select();
+		        					$(e.currentTarget).next().focus();
+		        				}
+		        			}
 	        			}
+
 
 								// update original input box
 	        			this.updateOriginalInput();
@@ -197,7 +210,7 @@
 	        			}
 			        },this));
 				}
-	
+
 
 		});
 
