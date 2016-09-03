@@ -110,7 +110,7 @@
 						// for desktop mode we build one input for each digit
 			        	for (var i = 0; i <  this.settings.inputs; i++) {
 
-			        		var input = $('<input>').attr({'type':'number','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
+			        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
 			        		if(this.settings.hidedigits){
 										// hide digits
 			        			input.attr('type','password');
@@ -188,8 +188,8 @@
 			        	// after every keystroke we check if all inputs have a value, if yes we call complete callback
 
 	        			if(!this._isTouchDevice()){
-		        			// on backspace go to previous input box
-		        			if(e.keyCode == 8 || e.keyCode == 48){
+		        			// on backspace or delete go to previous input box
+		        			if(e.keyCode == 8 || e.keyCode == 46){
 		        				// goto previous
 		        				$(e.currentTarget).prev().select();
 		    					$(e.currentTarget).prev().focus();
