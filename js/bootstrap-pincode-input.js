@@ -180,7 +180,6 @@
 		         	this.updateOriginalInput();
 				},
 				_isTouchDevice:function(){
-					return true;
 					// I know, sniffing is a really bad idea, but it works 99% of the times
 					if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 					 	return true;
@@ -205,7 +204,7 @@
 							if(this._isTouchDevice()){
 								if(e.keyCode == 8 || e.keyCode == 46){
 									// do nothing on backspace and delete
-									
+									alert(e.keyCode);
 								}else{
 									if($(this.element).val().length == this.settings.inputs){
 										e.preventDefault();
