@@ -202,7 +202,6 @@
 
 							// prevent more input for touch device (we can't limit it)
 							if(this._isTouchDevice()){
-								alert(e.which)
 								if(e.which  == 8 || e.which  == 46){
 									// do nothing on backspace and delete
 									
@@ -222,7 +221,7 @@
 	        		input.on('keyup', $.proxy(function(e){
 			        	// after every keystroke we check if all inputs have a value, if yes we call complete callback
 
-	        			if(!this._isTouchDevice()){
+	        			/*if(!this._isTouchDevice()){
 		        			// on backspace or delete go to previous input box
 		        			if(e.which  == 8 || e.which  == 46){
 		        				// goto previous
@@ -234,7 +233,7 @@
 		        					$(e.currentTarget).next().focus();
 		        				}
 		        			}
-	        			}
+	        			}*/
 
 
 								// update original input box
