@@ -188,7 +188,9 @@
 				_addEventsToInput:function(input){
 
 	        		input.on('focus',function(e){
-	        			 this.select();  //automatically select current value
+	        			if(!this._isTouchDevice()){
+	        				this.select();  //automatically select current value
+	        			}
 	        		});
 
 	        		input.on('keydown', $.proxy(function(e){
