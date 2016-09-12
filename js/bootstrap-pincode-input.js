@@ -202,6 +202,7 @@
 
 							// prevent more input for touch device (we can't limit it)
 							if(this._isTouchDevice()){
+								alert(e.which)
 								if(e.which  == 8 || e.which  == 46){
 									// do nothing on backspace and delete
 									
