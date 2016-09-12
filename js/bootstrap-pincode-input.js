@@ -188,9 +188,7 @@
 				_addEventsToInput:function(input){
 
 	        		input.on('focus',function(e){
-	        			if(!this._isTouchDevice()){
-	        				this.select();  //automatically select current value
-	        			}
+	        			 this.select();  //automatically select current value
 	        		});
 
 	        		input.on('keydown', $.proxy(function(e){
@@ -211,7 +209,7 @@
 									if($(this.element).val().length == this.settings.inputs){
 										e.preventDefault();
 									    e.stopPropagation();
-									    $(e.currentTarget).blur();
+									    //$(e.currentTarget).blur();
 									}
 								}
 						
@@ -223,22 +221,7 @@
 	        		input.on('keyup', $.proxy(function(e){
 			        	// after every keystroke we check if all inputs have a value, if yes we call complete callback
 
-	        			/*if(!this._isTouchDevice()){
-		        			// on backspace or delete go to previous input box
-		        			if(e.which  == 8 || e.which  == 46){
-		        				// goto previous
-		        				$(e.currentTarget).prev().select();
-		    					$(e.currentTarget).prev().focus();
-		        			}else{
-		        				if($(e.currentTarget).val()!=""){
-		            				$(e.currentTarget).next().select();
-		        					$(e.currentTarget).next().focus();
-		        				}
-		        			}
-	        			}*/
-
-
-								// update original input box
+						// update original input box
 	        			this.updateOriginalInput();
 
 	        			if(this.check()){
