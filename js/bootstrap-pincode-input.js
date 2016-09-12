@@ -48,6 +48,7 @@
 		$.extend(Plugin.prototype, {
 				init: function () {
 					this.buildInputBoxes();
+					
 				},
 		        updateOriginalInput:function(){
 		        	var newValue = "";
@@ -78,7 +79,7 @@
 
 		        },
 				buildInputBoxes: function () {
-		    	this._container = $('<div />').addClass('pincode-input-container');
+					this._container = $('<div />').addClass('pincode-input-container');
 
 					var currentValue = [];
 					// If we do not hide digits, we need to include the current value of the input box
@@ -94,9 +95,28 @@
 					}
 
 					if(this._isTouchDevice()){
-						var input = $('<input>').attr({'type':'number','pattern': "[0-9]*", 'inputmode':"numeric",'maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text first last mobile').appendTo(this._container);
-		        		if(this.settings.hidedigits){
-									// hide digits
+						// set main class
+						$(this._container).addClass("touch");
+						
+						// For touch devices we build a html table directly under the pincode textbox. The textbox will become transparent
+						// This table is used for styling only, it will display how many 'digits' the user should fill in.
+						// With CSS letter-spacing we try to put every digit visually insize each table cell.
+						
+						var wrapper = $('<div />').addClass('touchwrapper touch'+this.settings.inputs).appendTo(this._container);
+						var input = $('<input>').attr({'type':'number','pattern': "[0-9]*", 'inputmode':"numeric",'maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(wrapper);
+		        		
+						var touchtable = $('<table>').addClass('touchtable').appendTo(wrapper);
+						var row = $('<tr/>').appendTo(touchtable);
+						// create touch background elements (for showing user how many digits must be entered)
+						for (var i = 0; i <  this.settings.inputs; i++) {
+							if(i == (this.settings.inputs-1)){
+								$('<td/>').addClass('last').appendTo(row);
+							}else{
+								$('<td/>').appendTo(row);
+							}							
+						}						
+						if(this.settings.hidedigits){
+							// hide digits
 		        			input.attr('type','password');
 		        		}else{
 							// show digits, also include default value
