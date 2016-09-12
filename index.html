@@ -27,7 +27,8 @@
             	}
             	
             }});
-            
+            $('#pincode-input4').pincodeInput({hidedigits:false,inputs:4});
+            $('#pincode-input3').pincodeInput({hidedigits:false,inputs:5});
             $('#pincode-input2').pincodeInput({hidedigits:false,inputs:6,complete:function(value, e, errorElement){
             	$("#pincode-callback").html("Complete callback from 6-digit test: Current value: " + value);
             }});
@@ -73,6 +74,14 @@
                     <br/>
                     complete callback:
                     <span id="pincode-callback"></span>
+                    <h4>4 visible digits example</h4>
+                    <br/>
+                    <br/>
+                    <input type="text" id="pincode-input4"  >
+                    <h4>5 visible digits example</h4>
+                    <br/>
+                    <br/>
+                    <input type="text" id="pincode-input3"  >
                     <h4>6 visible digits example</h4>
                     <br/>
                     <br/>

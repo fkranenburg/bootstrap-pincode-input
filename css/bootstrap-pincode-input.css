@@ -25,7 +25,7 @@
 .pincode-input-container.touch .touchwrapper{
 	position:relative;
 	height:34px;
-	margin-right:5px
+	margin-right:5px;
 	overflow:hidden;
 }
 .pincode-input-container.touch .touchwrapper .pincode-input-text{
@@ -47,7 +47,7 @@
 .pincode-input-container.touch .touchwrapper.touch3{width:90px;}
 .pincode-input-container.touch .touchwrapper.touch4{width:120px;}
 .pincode-input-container.touch .touchwrapper.touch5{width:150px;}
-.pincode-input-container.touch .touchwrapper.touch6{width:280px;}
+.pincode-input-container.touch .touchwrapper.touch6{width:175px;}
 
 
 .pincode-input-container.touch .touchwrapper .touchtable{
