@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
     <script>
         $(document).ready(function() {
-            $('#pincode-input1').pincodeInput({complete:function(value, e, errorElement){
+            $('#pincode-input1').pincodeInput({hidedigits:false,complete:function(value, e, errorElement){
             	
             	$("#pincode-callback").html("This is the 'complete' callback firing. Current value: " + value);
             	
