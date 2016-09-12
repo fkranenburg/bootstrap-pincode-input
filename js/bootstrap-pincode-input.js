@@ -180,6 +180,7 @@
 		         	this.updateOriginalInput();
 				},
 				_isTouchDevice:function(){
+					return true;
 					// I know, sniffing is a really bad idea, but it works 99% of the times
 					if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 					 	return true;
@@ -200,6 +201,20 @@
 								$(this._pwfield).val("");
 							}
 
+							// prevent more input for touch device (we can't limit it)
+							if(this._isTouchDevice()){
+								if(e.keyCode == 8 || e.keyCode == 46){
+									// do nothing on backspace and delete
+									
+								}else{
+									if($(this.element).val().length == this.settings.inputs){
+										e.preventDefault();
+									    e.stopPropagation();
+									    $(e.currentTarget).blur();
+									}
+								}
+						
+							}
 
 						 this.settings.keydown(e);
 		            },this));
@@ -228,6 +243,20 @@
 	        			if(this.check()){
 	        				this.settings.complete($(this.element).val(), e, this._error);
 	        			}
+	        			
+	        			// prevent more input for touch device (we can't limit it)
+						if(this._isTouchDevice()){
+							if(e.keyCode == 8 || e.keyCode == 46){
+								// do nothing on backspace and delete
+								
+							}else{
+								if($(this.element).val().length == this.settings.inputs){
+								    $(e.currentTarget).blur();
+								}
+							}
+					
+						}
+	        			
 			        },this));
 				}
 
