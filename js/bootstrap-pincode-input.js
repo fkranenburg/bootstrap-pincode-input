@@ -209,7 +209,6 @@
 									if($(this.element).val().length == this.settings.inputs){
 										e.preventDefault();
 									    e.stopPropagation();
-									    //$(e.currentTarget).blur();
 									}
 								}
 						
@@ -231,8 +230,7 @@
 	        			// prevent more input for touch device (we can't limit it)
 						if(this._isTouchDevice()){
 							if(e.which  == 8 || e.which  == 46){
-								// do nothing on backspace and delete
-								
+								// do nothing on backspace and delete								
 							}else{
 								if($(this.element).val().length == this.settings.inputs){
 								    $(e.currentTarget).blur();
