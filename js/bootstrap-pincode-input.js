@@ -202,8 +202,7 @@
 
 							// prevent more input for touch device (we can't limit it)
 							if(this._isTouchDevice()){
-								alert(e.keyCode);
-								if(e.keyCode == 8 || e.keyCode == 46){
+								if(e.which  == 8 || e.which  == 46){
 									// do nothing on backspace and delete
 									
 								}else{
@@ -224,7 +223,7 @@
 
 	        			if(!this._isTouchDevice()){
 		        			// on backspace or delete go to previous input box
-		        			if(e.keyCode == 8 || e.keyCode == 46){
+		        			if(e.which  == 8 || e.which  == 46){
 		        				// goto previous
 		        				$(e.currentTarget).prev().select();
 		    					$(e.currentTarget).prev().focus();
@@ -246,7 +245,7 @@
 	        			
 	        			// prevent more input for touch device (we can't limit it)
 						if(this._isTouchDevice()){
-							if(e.keyCode == 8 || e.keyCode == 46){
+							if(e.which  == 8 || e.which  == 46){
 								// do nothing on backspace and delete
 								
 							}else{
