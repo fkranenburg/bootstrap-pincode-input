@@ -202,9 +202,10 @@
 
 							// prevent more input for touch device (we can't limit it)
 							if(this._isTouchDevice()){
+								alert(e.keyCode);
 								if(e.keyCode == 8 || e.keyCode == 46){
 									// do nothing on backspace and delete
-									alert(e.keyCode);
+									
 								}else{
 									if($(this.element).val().length == this.settings.inputs){
 										e.preventDefault();
