@@ -1,8 +1,8 @@
 {
   "name": "bootstrap-pincode-input",
-  "version": "1.2.1",
+  "version": "1.3",
   "description": "Bootstrap jQuery widget for x-digit pincode input",
-  "main": "js/bootstrap-pincode.input.js",
+  "main": "js/bootstrap-pincode-input.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

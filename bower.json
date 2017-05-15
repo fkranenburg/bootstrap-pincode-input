@@ -2,7 +2,7 @@
   "name": "bootstrap-pincode-input",
   "description": "Bootstrap jQuery widget for x-digit pincode input",
   "main": [
-    "js/bootstrap-pincode.input.js",
+    "js/bootstrap-pincode-input.js",
     "css/bootstrap-pincode-input.css"      
   ],
   "authors": [
