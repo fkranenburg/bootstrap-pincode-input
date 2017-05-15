@@ -27,7 +27,9 @@
             	}
             	
             }});
-            $('#pincode-input5').pincodeInput({hidedigits:true,inputs:4,placeholders:"0 0 0 1"});
+            $('#pincode-input5').pincodeInput({hidedigits:true,inputs:4,placeholders:"0 0 0 1",change: function(input,value,inputnumber){
+            	$("#pincode-callback2").html("onchange from input number "+inputnumber+", current value: " + value);
+            }});
             $('#pincode-input4').pincodeInput({hidedigits:false,inputs:4});
             $('#pincode-input3').pincodeInput({hidedigits:false,inputs:5});
             $('#pincode-input2').pincodeInput({hidedigits:false,inputs:6,complete:function(value, e, errorElement){
@@ -73,9 +75,10 @@
                     <a href="#" onclick="javascript:$('#pincode-input1').pincodeInput().data('plugin_pincodeInput').clear()">clear</a><br/>
                     <br/>
                     <br/>
-                    <h4>4 hidden digits example with placeholders</h4>
+                    <h4>4 hidden digits example with placeholders and onchange for every input</h4>
                     <br/>
                     <input type="text" id="pincode-input5"  >
+                    <span id="pincode-callback2"></span>
                     <br/>
                     <br/>
                     <h4>6 visible digits example</h4>

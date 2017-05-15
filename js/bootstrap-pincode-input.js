@@ -29,7 +29,12 @@
 		    	inputs:4,									    // 4 input boxes = code of 4 digits long
 		    	hidedigits:true,								// hide digits
 		    	keydown : function(e){},
-		        complete : function(value, e, errorElement){// callback when all inputs are filled in (keyup event)
+		    	change: function(input,value,inputnumber){		// callback on every input on change (keyup event)
+		    		//input = the input textbox DOM element
+		    		//value = the value entered by user (or removed)
+		    		//inputnumber = the position of the input box (in touch mode we only have 1 big input box, so always 1 is returned here)
+		    	},
+		        complete : function(value, e, errorElement){	// callback when all inputs are filled in (keyup event)
 		    		//value = the entered code
 		    		//e = last keyup event
 		    		//errorElement = error span next to to this, fill with html e.g. : $(errorElement).html("Code not correct");
@@ -135,7 +140,7 @@
 						}
 
 		        		// add events
-		        		this._addEventsToInput(input);
+		        		this._addEventsToInput(input,1);
 
 					}else{
 						// for desktop mode we build one input for each digit
@@ -159,7 +164,7 @@
 			        		}
 
 			        		// add events
-			        		this._addEventsToInput(input);
+			        		this._addEventsToInput(input,(i+1));
 			        	}
 					}
 
@@ -196,7 +201,7 @@
 					 	return true;
 					}
 				},
-				_addEventsToInput:function(input){
+				_addEventsToInput:function(input,inputnumber){
 
 	        		input.on('focus',function(e){
 	        			 this.select();  //automatically select current value
@@ -247,9 +252,16 @@
 						// update original input box
 	        			this.updateOriginalInput();
 
+	        			// oncomplete check
 	        			if(this.check()){
 	        				this.settings.complete($(this.element).val(), e, this._error);
 	        			}
+	        			
+	        			//onchange event for each input
+	        			if(this.settings.change){
+	        				this.settings.change(e.currentTarget,$(e.currentTarget).val(),inputnumber);
+	        			}
+	
 	        			
 	        			// prevent more input for touch device (we can't limit it)
 						if(this._isTouchDevice()){
