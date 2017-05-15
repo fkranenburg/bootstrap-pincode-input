@@ -25,6 +25,7 @@
 		// Create the defaults once
 		var pluginName = "pincodeInput";
 		var defaults = {
+				placeholders:undefined,							// seperate with a " "(space) to set an placeholder for each input box
 		    	inputs:4,									    // 4 input boxes = code of 4 digits long
 		    	hidedigits:true,								// hide digits
 		    	keydown : function(e){},
@@ -81,7 +82,17 @@
 				buildInputBoxes: function () {
 					this._container = $('<div />').addClass('pincode-input-container');
 
+					
+					
 					var currentValue = [];
+					var placeholders = [];
+					var touchplaceholders = "";  //in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
+					
+					if(this.settings.placeholders){
+						placeholders = this.settings.placeholders.split(" ");
+						touchplaceholders = this.settings.placeholders.replace(/ /g,"");
+					}
+					
 					// If we do not hide digits, we need to include the current value of the input box
 					// This will only work if the current value is not longer than the number of input boxes.
 					if( this.settings.hidedigits == false && $(this.element).val() !=""){
@@ -103,7 +114,7 @@
 						// With CSS letter-spacing we try to put every digit visually insize each table cell.
 						
 						var wrapper = $('<div />').addClass('touchwrapper touch'+this.settings.inputs).appendTo(this._container);
-						var input = $('<input>').attr({'type':'number','pattern': "[0-9]*", 'inputmode':"numeric",'maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(wrapper);
+						var input = $('<input>').attr({'type':'number','pattern': "[0-9]*", 'placeholder':touchplaceholders, 'inputmode':"numeric",'maxlength':this.settings.inputs,'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(wrapper);
 		        		
 						var touchtable = $('<table>').addClass('touchtable').appendTo(wrapper);
 						var row = $('<tr/>').appendTo(touchtable);
@@ -130,7 +141,7 @@
 						// for desktop mode we build one input for each digit
 			        	for (var i = 0; i <  this.settings.inputs; i++) {
 
-			        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off'}).addClass('form-control pincode-input-text').appendTo(this._container);
+			        		var input = $('<input>').attr({'type':'text','maxlength':"1",'autocomplete':'off','placeholder':(placeholders[i] ? placeholders[i] : undefined)}).addClass('form-control pincode-input-text').appendTo(this._container);
 			        		if(this.settings.hidedigits){
 										// hide digits
 			        			input.attr('type','password');
