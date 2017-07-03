@@ -228,6 +228,20 @@
 									}
 								}
 						
+							}else{
+								// in desktop mode, check if an number was entered
+								
+								if( !(e.keyCode == 8                                // backspace key
+										|| e.keyCode == 9							// tab key
+								        || e.keyCode == 46                          // delete key
+								        || (e.keyCode >= 48 && e.keyCode <= 57)     // numbers on keyboard
+								        || (e.keyCode >= 96 && e.keyCode <= 105))   // number on keypad
+								        ) {
+								            e.preventDefault();     // Prevent character input
+								            e.stopPropagation();  
+								            
+								    }
+								
 							}
 
 						 this.settings.keydown(e);
