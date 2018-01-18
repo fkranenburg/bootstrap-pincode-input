@@ -107,7 +107,7 @@
 					// make sure this is the first password field here
 					if(this.settings.hidedigits){
 							this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
-							this._pwfield = $('<input>').attr({'type':'password','pattern': "[0-9]*", 'inputmode':"numeric",'id':'preventautofill','autocomplete':'off'}).appendTo(this._pwcontainer);
+							this._pwfield = $('<input>').attr({'type':'password','pattern': "[0-9]*", 'inputmode':"numeric",'autocomplete':'off'}).appendTo(this._pwcontainer);
 					}
 
 					if(this._isTouchDevice()){
