@@ -112,12 +112,12 @@
 			if (this.settings.hidedigits) {
 				this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
 				this._pwfield = $('<input>').attr({
-					'type': 'password',
+                    'type': this.settings.inputtype,
 					'pattern': this.settings.pattern,
 					'inputmode': this.settings.inputmode,
 					'id': 'preventautofill',
 					'autocomplete': 'off'
-				}).appendTo(this._pwcontainer);
+				}).addClass('pincode-input-text-masked').appendTo(this._pwcontainer);
 			}
 
 			if (this._isTouchDevice()) {
@@ -150,7 +150,7 @@
 				}
 				if (this.settings.hidedigits) {
 					// hide digits
-					input.attr('type', 'password');
+					input.addClass('pincode-input-text-masked');
 				} else {
 					// show digits, also include default value
 					input.val(currentValue[i]);
@@ -171,7 +171,7 @@
 					}).addClass('form-control pincode-input-text').appendTo(this._container);
 					if (this.settings.hidedigits) {
 						// hide digits
-						input.attr('type', 'password');
+						input.addClass('pincode-input-text-masked');
 					} else {
 						// show digits, also include default value
 						input.val(currentValue[i]);

@@ -1,21 +1,22 @@
 {
   "name": "bootstrap-pincode-input",
-  "version": "1.4.1",
+  "version": "1.6.0",
   "description": "Bootstrap jQuery widget for x-digit pincode input",
   "main": "js/bootstrap-pincode-input.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "",
+    "prebuild": "npm install"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/fkranenburg/bootstrap-pincode-input.git"
   },
   "keywords": [
-   		"pincode",
-		"bootstrap pincode",
-		"bootstrap pincode input",
-		"jQuery",
-		"jquery-plugin" 
+    "pincode",
+    "bootstrap pincode",
+    "bootstrap pincode input",
+    "jQuery",
+    "jquery-plugin"
   ],
   "author": "Ferry Kranenburg",
   "license": "Apache-2.0",
