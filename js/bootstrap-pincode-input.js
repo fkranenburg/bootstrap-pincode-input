@@ -153,8 +153,8 @@
 					input.addClass('pincode-input-text-masked');
 				} else {
 					// show digits, also include default value
-					input.val(currentValue[i]);
-				}
+					input.val($(this.element).val());
+                }
 
 				// add events
 				this._addEventsToInput(input, 1);

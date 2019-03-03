@@ -3,14 +3,11 @@
 <html>
     <head>
         <title>Bootstrap Pincode Input examples</title>
+        <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-pincode-input.css" rel="stylesheet">
-    <style>
-        body{
-
-        }
-    </style>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
     <script>
@@ -30,14 +27,14 @@
             $('#pincode-input5').pincodeInput({hidedigits:true,inputs:4,placeholders:"0 0 0 1",change: function(input,value,inputnumber){
             	$("#pincode-callback2").html("onchange from input number "+inputnumber+", current value: " + value);
             }});
+            
             $('#pincode-input4').pincodeInput({hidedigits:false,inputs:4});
-            $('#pincode-input3').pincodeInput({hidedigits:false,inputs:5});
             $('#pincode-input2').pincodeInput({hidedigits:false,inputs:6,complete:function(value, e, errorElement){
             	$("#pincode-callback").html("Complete callback from 6-digit test: Current value: " + value);
             	
             	$(errorElement).html("I'm sorry, but the code not correct");
             }});
-            
+            $('#pincode-input6').pincodeInput({hidedigits:false,inputs:4});
             
         });
     </script>
@@ -95,9 +92,11 @@
                     <input type="text" id="pincode-input4"  >
                     <br/>
                     <br/>
-                    <h4>5 visible digits example</h4>
+  
                     <br/>
-                    <input type="text" id="pincode-input3"  >
+                    <h4>with default value (3631)</h4>
+                    <br/>
+                    <input type="text" id="pincode-input6" value="3631" >
   
             		<br/>
                 </div>
