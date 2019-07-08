@@ -25,10 +25,10 @@
 	// Create the defaults once
 	var pluginName = "pincodeInput";
 	var defaults = {
-		placeholders: undefined,							// seperate with a " "(space) to set an placeholder for each input box
+		placeholders: undefined,						// seperate with a " "(space) to set an placeholder for each input box
 		inputs: 4,									    // 4 input boxes = code of 4 digits long
 		hidedigits: true,								// hide digits
-		patern: '[0-9]*',
+		pattern: '[0-9]*',
 		inputtype: 'number',
 		inputmode: 'numeric',
 		keydown: function (e) {
@@ -95,7 +95,7 @@
 
 			var currentValue = [];
 			var placeholders = [];
-			var touchplaceholders = "";  //in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
+			var touchplaceholders = "";  // in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
 
 			if (this.settings.placeholders) {
 				placeholders = this.settings.placeholders.split(" ");
@@ -194,7 +194,7 @@
 			// error box
 			this._error = $('<div />').addClass('text-danger pincode-input-error').appendTo(this._container);
 
-			//hide original element and place this before it
+			// hide original element and place this before it
 			$(this.element).css("display", "none");
 			this._container.insertBefore(this.element);
 		},
@@ -226,7 +226,7 @@
 		_addEventsToInput: function (input, inputnumber) {
 
 			input.on('focus', function (e) {
-				this.select();  //automatically select current value
+				this.select();  // automatically select current value
 			});
 
 			input.on('keydown', $.proxy(function (e) {
@@ -243,26 +243,23 @@
 					if (e.keyCode == 8 || e.keyCode == 46) {
 						// do nothing on backspace and delete
 
-					} else {
-						if ($(this.element).val().length == this.settings.inputs) {
-							e.preventDefault();
-							e.stopPropagation();
-						}
+					} else if ($(this.element).val().length == this.settings.inputs) {
+						e.preventDefault();
+						e.stopPropagation();
 					}
 
 				} else {
 					// in desktop mode, check if an number was entered
 
-					if (!(e.keyCode == 8                                // backspace key
+					if (!(e.keyCode == 8                            // backspace key
 						|| e.keyCode == 9							// tab key
 						|| e.keyCode == 46                          // delete key
 						|| (e.keyCode >= 48 && e.keyCode <= 57)     // numbers on keyboard
-						|| (e.keyCode >= 96 && e.keyCode <= 105)   // number on keypad
-						|| (this.settings.inputtype != 'number' && e.keyCode >= 65 && e.keyCode <= 90))   // alfabet
+						|| (e.keyCode >= 96 && e.keyCode <= 105)    // number on keypad
+						|| ((this.settings.inputtype != 'number' && this.settings.inputtype != 'tel') && e.keyCode >= 65 && e.keyCode <= 90))   // alphabet
 					) {
 						e.preventDefault();     // Prevent character input
 						e.stopPropagation();
-
 					}
 
 				}
@@ -278,11 +275,9 @@
 						// goto previous
 						$(e.currentTarget).prev().select();
 						$(e.currentTarget).prev().focus();
-					} else {
-						if ($(e.currentTarget).val() != "") {
-							$(e.currentTarget).next().select();
-							$(e.currentTarget).next().focus();
-						}
+					} else if ($(e.currentTarget).val() != "") {
+						$(e.currentTarget).next().select();
+						$(e.currentTarget).next().focus();
 					}
 				}
 
@@ -294,7 +289,7 @@
 					this.settings.complete($(this.element).val(), e, this._error);
 				}
 
-				//onchange event for each input
+				// onchange event for each input
 				if (this.settings.change) {
 					this.settings.change(e.currentTarget, $(e.currentTarget).val(), inputnumber);
 				}
@@ -304,12 +299,9 @@
 				if (this._isTouchDevice()) {
 					if (e.keyCode == 8 || e.keyCode == 46) {
 						// do nothing on backspace and delete
-					} else {
-						if ($(this.element).val().length == this.settings.inputs) {
-							$(e.currentTarget).blur();
-						}
+					} else if ($(this.element).val().length == this.settings.inputs) {
+						$(e.currentTarget).blur();
 					}
-
 				}
 
 			}, this));
