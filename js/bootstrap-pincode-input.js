@@ -25,12 +25,13 @@
 	// Create the defaults once
 	var pluginName = "pincodeInput";
 	var defaults = {
-		placeholders: undefined,							// seperate with a " "(space) to set an placeholder for each input box
+		placeholders: undefined,						// seperate with a " "(space) to set an placeholder for each input box
 		inputs: 4,									    // 4 input boxes = code of 4 digits long
 		hidedigits: true,								// hide digits
-		patern: '[0-9]*',
+		pattern: '[0-9]*',
 		inputtype: 'number',
 		inputmode: 'numeric',
+		inputclass: '',									// could be changed to form-control-lg or any other class
 		keydown: function (e) {
 		},
 		change: function (input, value, inputnumber) {		// callback on every input on change (keyup event)
@@ -95,7 +96,7 @@
 
 			var currentValue = [];
 			var placeholders = [];
-			var touchplaceholders = "";  //in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
+			var touchplaceholders = "";  // in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
 
 			if (this.settings.placeholders) {
 				placeholders = this.settings.placeholders.split(" ");
@@ -136,16 +137,25 @@
 					'placeholder': touchplaceholders,
 					'maxlength': this.settings.inputs,
 					'autocomplete': 'off'
-				}).addClass('form-control pincode-input-text').appendTo(wrapper);
+				}).addClass(this.settings.inputclass + ' form-control pincode-input-text').appendTo(wrapper);
 
-				var touchtable = $('<table>').addClass('touchtable').appendTo(wrapper);
-				var row = $('<tr/>').appendTo(touchtable);
+				// calculate letter-spacing in Javascript since this isn't possible in CSS
+				var inputs = this.settings.inputs;
+				setTimeout(function(){
+					var width = $(input).innerWidth() - ((inputs + 2.5) * inputs);
+					var spacing = (width / inputs) ;
+					$(input).css({"letter-spacing":spacing + "px"});
+				},0);
+
+				
+
+				var touchtable = $('<div>').addClass('touch-flex').appendTo(wrapper);
 				// create touch background elements (for showing user how many digits must be entered)
 				for (var i = 0; i < this.settings.inputs; i++) {
 					if (i == (this.settings.inputs - 1)) {
-						$('<td/>').addClass('last').appendTo(row);
+						$('<div/>').addClass('touch-flex-cell').addClass('last').appendTo(touchtable);
 					} else {
-						$('<td/>').appendTo(row);
+						$('<div/>').addClass('touch-flex-cell').appendTo(touchtable);
 					}
 				}
 				if (this.settings.hidedigits) {
@@ -168,7 +178,7 @@
 						'maxlength': "1",
 						'autocomplete': 'off',
 						'placeholder': (placeholders[i] ? placeholders[i] : undefined)
-					}).addClass('form-control pincode-input-text').appendTo(this._container);
+					}).addClass(this.settings.inputclass + ' form-control pincode-input-text').appendTo(this._container);
 					if (this.settings.hidedigits) {
 						// hide digits
 						input.addClass('pincode-input-text-masked');
@@ -189,14 +199,14 @@
 					this._addEventsToInput(input, (i + 1));
 				}
 			}
-
-
-			// error box
-			this._error = $('<div />').addClass('text-danger pincode-input-error').appendTo(this._container);
-
-			//hide original element and place this before it
+			
+			// hide original element and place this before it
 			$(this.element).css("display", "none");
 			this._container.insertBefore(this.element);
+
+			// error box
+			this._error = $('<div />').addClass('text-danger pincode-input-error').insertBefore(this.element);
+
 		},
 		enable: function () {
 			$('.pincode-input-text', this._container).each(function (index, value) {
@@ -226,7 +236,7 @@
 		_addEventsToInput: function (input, inputnumber) {
 
 			input.on('focus', function (e) {
-				this.select();  //automatically select current value
+				this.select();  // automatically select current value
 			});
 
 			input.on('keydown', $.proxy(function (e) {
@@ -242,27 +252,23 @@
 				if (this._isTouchDevice()) {
 					if (e.keyCode == 8 || e.keyCode == 46) {
 						// do nothing on backspace and delete
-
-					} else {
-						if ($(this.element).val().length == this.settings.inputs) {
-							e.preventDefault();
-							e.stopPropagation();
-						}
+					} else if ($(this.element).val().length == this.settings.inputs) {
+						e.preventDefault();
+						e.stopPropagation();
 					}
 
 				} else {
 					// in desktop mode, check if an number was entered
 
-					if (!(e.keyCode == 8                                // backspace key
+					if (!(e.keyCode == 8                            // backspace key
 						|| e.keyCode == 9							// tab key
 						|| e.keyCode == 46                          // delete key
 						|| (e.keyCode >= 48 && e.keyCode <= 57)     // numbers on keyboard
-						|| (e.keyCode >= 96 && e.keyCode <= 105)   // number on keypad
-						|| (this.settings.inputtype != 'number' && e.keyCode >= 65 && e.keyCode <= 90))   // alfabet
+						|| (e.keyCode >= 96 && e.keyCode <= 105)    // number on keypad
+						|| ((this.settings.inputtype != 'number' && this.settings.inputtype != 'tel') && e.keyCode >= 65 && e.keyCode <= 90))   // alphabet
 					) {
 						e.preventDefault();     // Prevent character input
 						e.stopPropagation();
-
 					}
 
 				}
@@ -278,11 +284,9 @@
 						// goto previous
 						$(e.currentTarget).prev().select();
 						$(e.currentTarget).prev().focus();
-					} else {
-						if ($(e.currentTarget).val() != "") {
-							$(e.currentTarget).next().select();
-							$(e.currentTarget).next().focus();
-						}
+					} else if ($(e.currentTarget).val() != "") {
+						$(e.currentTarget).next().select();
+						$(e.currentTarget).next().focus();
 					}
 				}
 
@@ -294,7 +298,7 @@
 					this.settings.complete($(this.element).val(), e, this._error);
 				}
 
-				//onchange event for each input
+				// onchange event for each input
 				if (this.settings.change) {
 					this.settings.change(e.currentTarget, $(e.currentTarget).val(), inputnumber);
 				}
@@ -304,12 +308,10 @@
 				if (this._isTouchDevice()) {
 					if (e.keyCode == 8 || e.keyCode == 46) {
 						// do nothing on backspace and delete
-					} else {
-						if ($(this.element).val().length == this.settings.inputs) {
-							$(e.currentTarget).blur();
-						}
+					} else if ($(this.element).val().length == this.settings.inputs) {
+						$(e.currentTarget).blur();						
+										
 					}
-
 				}
 
 			}, this));

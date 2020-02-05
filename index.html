@@ -5,10 +5,9 @@
         <title>Bootstrap Pincode Input examples</title>
         <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="css/bootstrap-pincode-input.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script   src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
     <script>
         $(document).ready(function() {
@@ -35,6 +34,7 @@
             	$(errorElement).html("I'm sorry, but the code not correct");
             }});
             $('#pincode-input6').pincodeInput({hidedigits:false,inputs:4});
+            $('#pincode-input7').pincodeInput({hidedigits:false,inputs:4,inputclass:'form-control-lg'});
             
         });
     </script>
@@ -66,7 +66,9 @@
                     <h4>Basic Example (normal input box)</h4>
                     <br/>
                     <br/>
-                    <input type="text" id="pincode-input1"  >
+                    <div style="width:200px">
+                        <input type="text" id="pincode-input1"  >
+                    </div>
             		<br/>
                     <br/>
                     <b>Methods:</b><br/>
@@ -76,29 +78,44 @@
                     <br/>
                     <h4>4 hidden digits example with placeholders and onchange for every input</h4>
                     <br/>
-                    <input type="text" id="pincode-input5"  >
+                    <div style="width:300px">
+                        <input type="text" id="pincode-input5"  >
+                    </div>
                     <span id="pincode-callback2"></span>
                     <br/>
                     <br/>
                     <h4>6 visible digits example</h4>
                     <br/>
-                    <input type="text" id="pincode-input2"  >
+                    <div style="width:200px">
+                        <input type="text" id="pincode-input2"  >
+                    </div>
+                    
                     complete callback:
                     <span id="pincode-callback"></span>
                     <br/>
                     <br/>
                     <h4>4 visible digits example</h4>
                     <br/>
-                    <input type="text" id="pincode-input4"  >
+                    <div style="width:200px">
+                        <input type="text" id="pincode-input4"  >
+                    </div>
                     <br/>
                     <br/>
   
                     <br/>
                     <h4>with default value (3631)</h4>
                     <br/>
-                    <input type="text" id="pincode-input6" value="3631" >
-  
-            		<br/>
+                    <div style="width:200px">
+                        <input type="text" id="pincode-input6" value="3631" >
+                    </div>
+                    <br/>
+                    <h4>large inputboxes (using form-control-lg class)</h4>
+                    <br/>
+                    <div style="width:400px">
+                        <input type="text" id="pincode-input7" value="" >
+                    </div>
+                    <br/>
+                    <br/>
                 </div>
             </div>
         </div>
