@@ -142,8 +142,9 @@
 
 				// calculate letter-spacing in Javascript since this isn't possible in CSS
 				var inputs = this.settings.inputs;
+				var letterspacingfix = this.settings.letterspacingfix;
 				setTimeout(function(){
-					var width = $(input).innerWidth() - ((inputs + this.settings.letterspacingfix) * inputs);
+					var width = $(input).innerWidth() - ((inputs + letterspacingfix) * inputs);
 					var spacing = (width / inputs) ;
 					$(input).css({"letter-spacing":spacing + "px"});
 				},0);
