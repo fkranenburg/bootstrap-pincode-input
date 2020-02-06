@@ -32,6 +32,7 @@
 		inputtype: 'number',
 		inputmode: 'numeric',
 		inputclass: '',									// could be changed to form-control-lg or any other class
+		letterspacingfix: 2.8,							// this value could be changed when the digits are not completely visible in touch device mode		
 		keydown: function (e) {
 		},
 		change: function (input, value, inputnumber) {		// callback on every input on change (keyup event)
@@ -142,7 +143,7 @@
 				// calculate letter-spacing in Javascript since this isn't possible in CSS
 				var inputs = this.settings.inputs;
 				setTimeout(function(){
-					var width = $(input).innerWidth() - ((inputs + 2.5) * inputs);
+					var width = $(input).innerWidth() - ((inputs + this.settings.letterspacingfix) * inputs);
 					var spacing = (width / inputs) ;
 					$(input).css({"letter-spacing":spacing + "px"});
 				},0);
@@ -309,7 +310,12 @@
 					if (e.keyCode == 8 || e.keyCode == 46) {
 						// do nothing on backspace and delete
 					} else if ($(this.element).val().length == this.settings.inputs) {
-						$(e.currentTarget).blur();						
+						$(e.currentTarget).addClass("noletterspacing");
+						
+						$(e.currentTarget).select();
+						$(e.currentTarget).blur();		
+						
+						$(e.currentTarget).removeClass("noletterspacing");
 										
 					}
 				}
