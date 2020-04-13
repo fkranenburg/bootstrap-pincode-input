@@ -229,6 +229,52 @@
 			});
 			this.updateOriginalInput();
 		},
+		_setValue:function(newValue, e){
+
+			// slice value
+			var value = newValue.substring(0,this.settings.inputs);
+
+			if (this._isTouchDevice()) {
+
+				// update value
+				$('.pincode-input-text', this._container).each(function (index, input) {
+					$(input).val(value);
+				});
+				
+
+				// a hack to prevent visual issues on mobile devices
+				$(this.element).addClass("noletterspacing");						
+				$(this.element).select();
+				$(this.element).blur();							
+				$(this.element).removeClass("noletterspacing");
+
+				// update original input box
+				this.updateOriginalInput();
+
+				// oncomplete check
+				if (this.check()) {
+					this.settings.complete($(this.element).val(), e, this._error);
+				}
+
+			}else{
+
+				var values = value.split('');
+
+				$('.pincode-input-text', this._container).each(function (index, input) {
+					$(input).val(values[index]);
+				});
+
+				// update original input box
+				this.updateOriginalInput();
+
+				// oncomplete check
+				if (this.check()) {
+					this.settings.complete($(this.element).val(), e, this._error);
+				}
+
+			}
+
+		},
 		_isTouchDevice: function () {
 			// I know, sniffing is a really bad idea, but it works 99% of the times
 			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -240,6 +286,17 @@
 			input.on('focus', function (e) {
 				this.select();  // automatically select current value
 			});
+
+			// paste event should call onchange and oncomplete callbacks
+			input.on('paste', $.proxy(function (e) {
+				e.preventDefault();
+
+				var clipboardData =  (e.originalEvent || e).clipboardData || window.clipboardData;
+    			var pastedData = clipboardData.getData('text/plain');
+				
+				this._setValue(pastedData,e);
+
+			},this));
 
 			input.on('keydown', $.proxy(function (e) {
 				if (this._pwfield) {
@@ -322,6 +379,8 @@
 				}
 
 			}, this));
+
+
 		}
 
 
