@@ -32,7 +32,7 @@
 		inputtype: 'number',
 		inputmode: 'numeric',
 		inputclass: '',									// could be changed to form-control-lg or any other class
-		letterspacingfix: 2.8,							// this value could be changed when the digits are not completely visible in touch device mode		
+		characterwidth: null, 		// em width of PIN character; defaults to 0.54 (em width of a typical digit), or 0.4 if digits are hidden
 		keydown: function (e) {
 		},
 		change: function (input, value, inputnumber) {		// callback on every input on change (keyup event)
@@ -142,11 +142,16 @@
 
 				// calculate letter-spacing in Javascript since this isn't possible in CSS
 				var inputs = this.settings.inputs;
-				var letterspacingfix = this.settings.letterspacingfix;
+				var digitEms = this.settings.characterwidth || (this.settings.hidedigits ? 0.4 : 0.54);
 				setTimeout(function(){
-					var width = $(input).innerWidth() - ((inputs + letterspacingfix) * inputs);
-					var spacing = (width / inputs) ;
-					$(input).css({"letter-spacing":spacing + "px"});
+					var digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
+					var spaceWidth = input.innerWidth() / inputs;
+					var spaceBetweenChars = spaceWidth - digitWidth;
+					$(input).css({
+						"padding-left": spaceBetweenChars / 2 + "px",
+						"padding-right": "0",
+						"letter-spacing": spaceBetweenChars + "px"
+					});
 				},0);
 
 				
