@@ -285,6 +285,10 @@
 			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 				return true;
 			}
+			// iPad Pro pretends to be a Mac, but Macs don't have touch controls
+			if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) {
+				return true;
+			}
 		},
 		_addEventsToInput: function (input, inputnumber) {
 
