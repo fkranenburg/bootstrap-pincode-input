@@ -17,14 +17,14 @@
  * limitations under the License.
  * ========================================================= */
 
-;(function ($, window, document, undefined) {
+; (function ($, window, document, undefined) {
 
 	"use strict";
 
 
 	// Create the defaults once
-	var pluginName = "pincodeInput";
-	var defaults = {
+	let pluginName = "pincodeInput";
+	let defaults = {
 		placeholders: undefined,						// seperate with a " "(space) to set an placeholder for each input box
 		inputs: 4,									    // 4 input boxes = code of 4 digits long
 		hidedigits: true,								// hide digits
@@ -64,15 +64,15 @@
 
 		},
 		updateOriginalInput: function () {
-			var newValue = "";
+			let newValue = "";
 			$('.pincode-input-text', this._container).each(function (index, value) {
 				newValue += $(value).val().toString();
 			});
 			$(this.element).val(newValue);
 		},
 		check: function () {
-			var isComplete = true;
-			var code = "";
+			let isComplete = true;
+			let code = "";
 			$('.pincode-input-text', this._container).each(function (index, value) {
 				code += $(value).val().toString();
 				if (!$(value).val()) {
@@ -95,9 +95,9 @@
 			this._container = $('<div />').addClass('pincode-input-container');
 
 
-			var currentValue = [];
-			var placeholders = [];
-			var touchplaceholders = "";  // in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
+			let currentValue = [];
+			let placeholders = [];
+			let touchplaceholders = "";  // in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
 
 			if (this.settings.placeholders) {
 				placeholders = this.settings.placeholders.split(" ");
@@ -114,7 +114,7 @@
 			if (this.settings.hidedigits) {
 				this._pwcontainer = $('<div />').css("display", "none").appendTo(this._container);
 				this._pwfield = $('<input>').attr({
-                    'type': this.settings.inputtype,
+					'type': this.settings.inputtype,
 					'pattern': this.settings.pattern,
 					'inputmode': this.settings.inputmode,
 					'id': 'preventautofill',
@@ -130,8 +130,8 @@
 				// This table is used for styling only, it will display how many 'digits' the user should fill in.
 				// With CSS letter-spacing we try to put every digit visually insize each table cell.
 
-				var wrapper = $('<div />').addClass('touchwrapper touch' + this.settings.inputs).appendTo(this._container);
-				var input = $('<input>').attr({
+				let wrapper = $('<div />').addClass('touchwrapper touch' + this.settings.inputs).appendTo(this._container);
+				let input = $('<input>').attr({
 					'type': this.settings.inputtype,
 					'pattern': this.settings.pattern,
 					'inputmode': this.settings.inputmode,
@@ -141,24 +141,24 @@
 				}).addClass(this.settings.inputclass + ' form-control pincode-input-text').appendTo(wrapper);
 
 				// calculate letter-spacing in Javascript since this isn't possible in CSS
-				var inputs = this.settings.inputs;
-				var digitEms = this.settings.characterwidth || (this.settings.hidedigits ? 0.4 : 0.54);
-				setTimeout(function(){
-					var digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
-					var spaceWidth = input.innerWidth() / inputs;
-					var spaceBetweenChars = spaceWidth - digitWidth;
+				let inputs = this.settings.inputs;
+				let digitEms = this.settings.characterwidth || (this.settings.hidedigits ? 0.4 : 0.54);
+				setTimeout(function () {
+					let digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
+					let spaceWidth = input.innerWidth() / inputs;
+					let spaceBetweenChars = spaceWidth - digitWidth;
 					$(input).css({
 						"padding-left": spaceBetweenChars / 2 + "px",
 						"padding-right": "0",
 						"letter-spacing": spaceBetweenChars + "px"
 					});
-				},0);
+				}, 0);
 
-				
 
-				var touchtable = $('<div>').addClass('touch-flex').appendTo(wrapper);
+
+				let touchtable = $('<div>').addClass('touch-flex').appendTo(wrapper);
 				// create touch background elements (for showing user how many digits must be entered)
-				for (var i = 0; i < this.settings.inputs; i++) {
+				for (let i = 0; i < this.settings.inputs; i++) {
 					if (i == (this.settings.inputs - 1)) {
 						$('<div/>').addClass('touch-flex-cell').addClass('last').appendTo(touchtable);
 					} else {
@@ -171,21 +171,23 @@
 				} else {
 					// show digits, also include default value
 					input.val($(this.element).val());
-                }
+				}
 
 				// add events
 				this._addEventsToInput(input, 1);
 
 			} else {
 				// for desktop mode we build one input for each digit
-				for (var i = 0; i < this.settings.inputs; i++) {
+				let width = (100 / this.settings.inputs) + '%';
+				for (let i = 0; i < this.settings.inputs; i++) {
 
-					var input = $('<input>').attr({
+					let input = $('<input>').attr({
 						'type': 'text',
 						'maxlength': "1",
 						'autocomplete': 'off',
 						'placeholder': (placeholders[i] ? placeholders[i] : undefined)
 					}).addClass(this.settings.inputclass + ' form-control pincode-input-text').appendTo(this._container);
+					input.css({ width: width })
 					if (this.settings.hidedigits) {
 						// hide digits
 						input.addClass('pincode-input-text-masked');
@@ -206,7 +208,7 @@
 					this._addEventsToInput(input, (i + 1));
 				}
 			}
-			
+
 			// hide original element and place this before it
 			$(this.element).css("display", "none");
 			this._container.insertBefore(this.element);
@@ -234,10 +236,10 @@
 			});
 			this.updateOriginalInput();
 		},
-		_setValue:function(newValue, e){
+		_setValue: function (newValue, e) {
 
 			// slice value
-			var value = newValue.substring(0,this.settings.inputs);
+			let value = newValue.substring(0, this.settings.inputs);
 
 			if (this._isTouchDevice()) {
 
@@ -245,12 +247,12 @@
 				$('.pincode-input-text', this._container).each(function (index, input) {
 					$(input).val(value);
 				});
-				
+
 
 				// a hack to prevent visual issues on mobile devices
-				$(this.element).addClass("noletterspacing");						
+				$(this.element).addClass("noletterspacing");
 				$(this.element).select();
-				$(this.element).blur();							
+				$(this.element).blur();
 				$(this.element).removeClass("noletterspacing");
 
 				// update original input box
@@ -261,9 +263,9 @@
 					this.settings.complete($(this.element).val(), e, this._error);
 				}
 
-			}else{
+			} else {
 
-				var values = value.split('');
+				let values = value.split('');
 
 				$('.pincode-input-text', this._container).each(function (index, input) {
 					$(input).val(values[index]);
@@ -300,19 +302,19 @@
 			input.on('paste', $.proxy(function (e) {
 				e.preventDefault();
 
-				var clipboardData =  (e.originalEvent || e).clipboardData || window.clipboardData;
-    			var pastedData = clipboardData.getData('text/plain');
-				
-				this._setValue(pastedData,e);
+				let clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+				let pastedData = clipboardData.getData('text/plain');
 
-			},this));
+				this._setValue(pastedData, e);
+
+			}, this));
 
 			input.on('keydown', $.proxy(function (e) {
 				if (this._pwfield) {
 					// Because we need to prevent password saving by browser
 					// remove the value here and change the type!
 					// we do this every time the user types
-					$(this._pwfield).attr({'type': 'text'});
+					$(this._pwfield).attr({ 'type': 'text' });
 					$(this._pwfield).val("");
 				}
 
@@ -378,12 +380,12 @@
 						// do nothing on backspace and delete
 					} else if ($(this.element).val().length == this.settings.inputs) {
 						$(e.currentTarget).addClass("noletterspacing");
-						
+
 						$(e.currentTarget).select();
-						$(e.currentTarget).blur();		
-						
+						$(e.currentTarget).blur();
+
 						$(e.currentTarget).removeClass("noletterspacing");
-										
+
 					}
 				}
 
