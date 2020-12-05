@@ -335,6 +335,7 @@
 						|| e.keyCode == 46                          // delete key
 						|| (e.keyCode >= 48 && e.keyCode <= 57)     // numbers on keyboard
 						|| (e.keyCode >= 96 && e.keyCode <= 105)    // number on keypad
+						|| (e.ctrlKey || e.metaKey) // paste
 						|| ((this.settings.inputtype != 'number' && this.settings.inputtype != 'tel') && e.keyCode >= 65 && e.keyCode <= 90))   // alphabet
 					) {
 						e.preventDefault();     // Prevent character input
