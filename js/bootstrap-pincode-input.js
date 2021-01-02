@@ -143,16 +143,35 @@
 				// calculate letter-spacing in Javascript since this isn't possible in CSS
 				let inputs = this.settings.inputs;
 				let digitEms = this.settings.characterwidth || (this.settings.hidedigits ? 0.4 : 0.54);
-				setTimeout(function () {
-					let digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
-					let spaceWidth = input.innerWidth() / inputs;
-					let spaceBetweenChars = spaceWidth - digitWidth;
-					$(input).css({
-						"padding-left": spaceBetweenChars / 2 + "px",
-						"padding-right": "0",
-						"letter-spacing": spaceBetweenChars + "px"
-					});
-				}, 0);
+				
+				if(wrapper.closest('.modal')) {
+					setTimeout(function () {
+						wrapper.closest('.modal').on('shown.bs.modal', function () {
+							setTimeout(function () {
+								let digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
+								let spaceWidth = input.innerWidth() / inputs;
+								let spaceBetweenChars = spaceWidth - digitWidth;
+								$(input).css({
+									"padding-left": spaceBetweenChars / 2 + "px",
+									"padding-right": "0",
+									"letter-spacing": spaceBetweenChars + "px"
+								});
+							}, 0);
+						});
+					}, 0);
+				}
+				else {
+					setTimeout(function () {
+						let digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
+						let spaceWidth = input.innerWidth() / inputs;
+						let spaceBetweenChars = spaceWidth - digitWidth;
+						$(input).css({
+							"padding-left": spaceBetweenChars / 2 + "px",
+							"padding-right": "0",
+							"letter-spacing": spaceBetweenChars + "px"
+						});
+					}, 0);
+				}
 
 
 
@@ -335,7 +354,6 @@
 						|| e.keyCode == 46                          // delete key
 						|| (e.keyCode >= 48 && e.keyCode <= 57)     // numbers on keyboard
 						|| (e.keyCode >= 96 && e.keyCode <= 105)    // number on keypad
-						|| (e.ctrlKey || e.metaKey) // paste
 						|| ((this.settings.inputtype != 'number' && this.settings.inputtype != 'tel') && e.keyCode >= 65 && e.keyCode <= 90))   // alphabet
 					) {
 						e.preventDefault();     // Prevent character input
