@@ -1,7 +1,7 @@
 {
   "name": "bootstrap-pincode-input",
-  "version": "2.3.0",
-  "description": "Bootstrap jQuery widget for x-digit pincode input",
+  "version": "3.0.0",
+  "description": "Bootstrap jQuery widget for multi-digit pincode input",
   "main": "js/bootstrap-pincode-input.js",
   "scripts": {
     "start": "lite-server",

@@ -12,6 +12,7 @@
 .pincode-input-container {
 	display:inline-flex;
 	width:100%;
+
 }
 .pincode-input-container input.first {
 	border-top-right-radius:0px;
@@ -20,34 +21,51 @@
 .pincode-input-container input.last {
 	border-top-left-radius:0px;
 	border-bottom-left-radius:0px;
-	border-left-width:0px;
-}
-.pincode-input-container input.mid {
-	border-radius:0px;
-	border-left-width:0px;
-}
-.pincode-input-text, .form-control.pincode-input-text {
-	text-align:center;
-	flex-grow:1;
-}
-.pincode-input-error{
-	clear:both;
+	border-left-width: 0px;
 }
 
-.pincode-input-container.touch .touchwrapper{
-	position:relative;
-	height:100%;
-	flex-grow:1;
+.pincode-input-container input.mid {
+	border-radius: 0px;
+	border-left-width: 0px;
 }
-.pincode-input-container.touch .touchwrapper .pincode-input-text{
-    display: block;
-    background-color:transparent;
-    background:transparent;
-	text-align:initial;
-	
+
+.pincode-input-text, .form-control.pincode-input-text {
+	text-align: center;
+	flex-grow: 1;
 }
-.pincode-input-container.touch .touchwrapper .pincode-input-text.noletterspacing{
+
+.pincode-input-container.touch .pincode-input-text:focus, .pincode-input-container.touch .form-control.pincode-input-text:focus {
+	outline: none;
+	border: 0;
+	box-shadow: none;
+}
+
+.pincode-input-text.filled {
+	caret-color: transparent;
+}
+
+
+.pincode-input-error {
+	clear: both;
+}
+
+.pincode-input-container.touch .touchwrapper {
+	position: relative;
+	height: 100%;
+	flex-grow: 1;
+}
+.pincode-input-container.touch .touchwrapper .pincode-input-text {
+	display: block;
+	background-color: transparent;
+	background: transparent;
+	text-align: initial;
+	border: 0;
+	padding-left: 0;
+	overflow: visible;
+}
+.pincode-input-container.touch .touchwrapper .pincode-input-text.noletterspacing {
 	letter-spacing: 0 !important;
+	visibility: hidden;
 }
 
 

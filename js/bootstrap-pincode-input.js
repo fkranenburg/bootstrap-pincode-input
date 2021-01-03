@@ -31,7 +31,7 @@
 		pattern: '[0-9]*',
 		inputtype: 'number',
 		inputmode: 'numeric',
-		inputclass: '',									// could be changed to form-control-lg or any other class
+		inputclass: '',									// add custom class to input tag
 		characterwidth: null, 		// em width of PIN character; defaults to 0.54 (em width of a typical digit), or 0.4 if digits are hidden
 		keydown: function (e) {
 		},
@@ -69,6 +69,10 @@
 				newValue += $(value).val().toString();
 			});
 			$(this.element).val(newValue);
+
+			if (newValue.length !== this.settings.inputs) {
+				$('.pincode-input-text', this._container).removeClass("filled");
+			}
 		},
 		check: function () {
 			let isComplete = true;
@@ -136,7 +140,7 @@
 					'pattern': this.settings.pattern,
 					'inputmode': this.settings.inputmode,
 					'placeholder': touchplaceholders,
-					'maxlength': this.settings.inputs,
+					'maxLength': this.settings.inputs,
 					'autocomplete': 'off'
 				}).addClass(this.settings.inputclass + ' form-control pincode-input-text').appendTo(wrapper);
 
@@ -148,8 +152,8 @@
 					let spaceWidth = input.innerWidth() / inputs;
 					let spaceBetweenChars = spaceWidth - digitWidth;
 					$(input).css({
-						"padding-left": spaceBetweenChars / 2 + "px",
-						"padding-right": "0",
+						"margin-left": spaceBetweenChars / 2 + "px",
+						"width": "110%",  //this prevents pincode 'jumping'
 						"letter-spacing": spaceBetweenChars + "px"
 					});
 				}, 0);
@@ -186,7 +190,7 @@
 						'maxlength': "1",
 						'autocomplete': 'off',
 						'placeholder': (placeholders[i] ? placeholders[i] : undefined)
-					}).addClass(this.settings.inputclass + ' form-control pincode-input-text').appendTo(this._container);
+					}).addClass(this.settings.inputclass + ' form-control  pincode-input-text').appendTo(this._container);
 					input.css({ width: width })
 					if (this.settings.hidedigits) {
 						// hide digits
@@ -248,13 +252,6 @@
 					$(input).val(value);
 				});
 
-
-				// a hack to prevent visual issues on mobile devices
-				$(this.element).addClass("noletterspacing");
-				$(this.element).select();
-				$(this.element).blur();
-				$(this.element).removeClass("noletterspacing");
-
 				// update original input box
 				this.updateOriginalInput();
 
@@ -294,9 +291,12 @@
 		},
 		_addEventsToInput: function (input, inputnumber) {
 
-			input.on('focus', function (e) {
-				this.select();  // automatically select current value
-			});
+			input.on('focus', $.proxy(function (e) {
+				if (this._isTouchDevice()) {
+					this._setValue("", e)  //always empty when we re-focus
+				}
+				input.select();  // automatically select current value
+			}, this));
 
 			// paste event should call onchange and oncomplete callbacks
 			input.on('paste', $.proxy(function (e) {
@@ -325,6 +325,8 @@
 					} else if ($(this.element).val().length == this.settings.inputs) {
 						e.preventDefault();
 						e.stopPropagation();
+					} else if ($(this.element).val().length == (this.settings.inputs - 1)) {
+						$(e.currentTarget).addClass("filled");
 					}
 
 				} else {
@@ -363,29 +365,29 @@
 				// update original input box
 				this.updateOriginalInput();
 
-				// oncomplete check
-				if (this.check()) {
-					this.settings.complete($(this.element).val(), e, this._error);
-				}
-
 				// onchange event for each input
 				if (this.settings.change) {
 					this.settings.change(e.currentTarget, $(e.currentTarget).val(), inputnumber);
 				}
 
-
-				// prevent more input for touch device (we can't limit it)
 				if (this._isTouchDevice()) {
 					if (e.keyCode == 8 || e.keyCode == 46) {
 						// do nothing on backspace and delete
 					} else if ($(this.element).val().length == this.settings.inputs) {
-						$(e.currentTarget).addClass("noletterspacing");
-
-						$(e.currentTarget).select();
 						$(e.currentTarget).blur();
+					}
+				}
 
-						$(e.currentTarget).removeClass("noletterspacing");
+				// oncomplete check
+				if (this.check()) {
 
+					if (this._isTouchDevice()) {
+						// oncomplete callback is fired 100ms after above 'blur' event
+						setTimeout($.proxy(function () {
+							this.settings.complete($(this.element).val(), e, this._error);
+						}, this), 100);
+					} else {
+						this.settings.complete($(this.element).val(), e, this._error);
 					}
 				}
 
