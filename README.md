@@ -21,12 +21,7 @@ A demo can be found at [fkranenburg.github.io/bootstrap-pincode-input][site]
 
 # Installation
 
-You can install bootstrap-pincode-input by using [Bower](http://bower.io/).
-
-```bash
-bower install bootstrap-pincode-input
-```
-Or you can install it through [npm](https://www.npmjs.com/):
+You can install bootstrap-pincode-input by using [npm](https://www.npmjs.com/):
 
 ```
 npm install --save bootstrap-pincode-input
