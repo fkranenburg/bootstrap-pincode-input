@@ -62,6 +62,8 @@
 	border: 0;
 	padding-left: 0;
 	overflow: visible;
+	box-shadow: none;
+	transition: none;
 }
 .pincode-input-container.touch .touchwrapper .pincode-input-text.noletterspacing {
 	letter-spacing: 0 !important;
@@ -76,13 +78,21 @@
     padding: 0;
     position: absolute;
     top: 0px;
-    width: 100%;
-    height: 100%;
-    z-index:-1;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
 }
 
-.pincode-input-container.touch .touch-flex-cell{
-	flex-grow:1;
-	border:1px solid #ced4da;
+.pincode-input-container.touch .touch-flex-cell {
+	flex-grow: 1;
+	border: 1px solid #ced4da;
 }
 
+.modal-dialog .pincode-input-container.touch .pincode-input-text {
+	z-index: 1042;
+}
+
+.modal-dialog .pincode-input-container.touch .touch-flex {
+	z-index: 1041;
+	pointer-events: none;
+}

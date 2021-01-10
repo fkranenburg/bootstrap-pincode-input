@@ -5,15 +5,32 @@
         <title>Bootstrap Pincode Input examples</title>
         <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="css/bootstrap-pincode-input.css" rel="stylesheet">
-    <script   src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#pincode-input1').pincodeInput({hidedigits:false,complete:function(value, e, errorElement){
-            	
-            	$("#pincode-callback").html("This is the 'complete' callback firing. Current value: " + value);
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+              crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+              integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ"
+              crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+                crossorigin="anonymous"></script>
+
+        <link href="css/bootstrap-pincode-input.css" rel="stylesheet">
+
+        <script type="text/javascript" src="js/bootstrap-pincode-input.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#pincode-input1').pincodeInput({
+                    hidedigits: false, complete: function (value, e, errorElement) {
+
+                        $("#pincode-callback").html("This is the 'complete' callback firing. Current value: " + value);
             	
             	// check the code
             	if(value!="1234"){
@@ -25,18 +42,38 @@
             }});
             $('#pincode-input5').pincodeInput({hidedigits:true,inputs:4,placeholders:"0 0 0 1",change: function(input,value,inputnumber){
             	$("#pincode-callback2").html("onchange from input number "+inputnumber+", current value: " + value);
-            }});
-            
-            $('#pincode-input4').pincodeInput({hidedigits:false,inputs:4});
-            $('#pincode-input2').pincodeInput({hidedigits:false,inputs:6,complete:function(value, e, errorElement){
-            	$("#pincode-callback").html("Complete callback from 6-digit test: Current value: " + value);
-            	
-            	$(errorElement).html("I'm sorry, but the code not correct");
-            }});
-            $('#pincode-input6').pincodeInput({hidedigits:false,inputs:4});
-            $('#pincode-input7').pincodeInput({hidedigits:false,inputs:4,inputclass:'form-control-lg'});
-            
-        });
+                }
+            });
+
+                $('#pincode-input4').pincodeInput({hidedigits: false, inputs: 4});
+                $('#pincode-input2').pincodeInput({
+                    hidedigits: false, inputs: 6, complete: function (value, e, errorElement) {
+                        $("#pincode-callback").html("Complete callback from 6-digit test: Current value: " + value);
+
+                        $(errorElement).html("I'm sorry, but the code not correct");
+                    }
+                });
+                $('#pincode-input6').pincodeInput({hidedigits: false, inputs: 4});
+                $('#pincode-input7').pincodeInput({hidedigits: false, inputs: 4, inputclass: 'form-control-lg'});
+
+                // show modal on button click
+                $('#modalshow').click(function () {
+                    $('#modal-enter-pin').modal('show');
+                });
+
+                // show modal once
+                $('#modal-enter-pin').one('shown.bs.modal', function (e) {
+                    $('#pincode-input8').pincodeInput({
+                        inputs: 4,
+                        complete: function (text) {
+                            alert('your code ' + text);
+                            $('#modal-enter-pin').modal('hide');
+                        }
+                    });
+                    //autofocus
+                    $('#pincode-input8').pincodeInput().data('plugin_pincodeInput').focus()
+                });
+            });
     </script>
     </head>
     <body>
@@ -106,18 +143,43 @@
                     <h4>with default value (3631)</h4>
                     <br/>
                     <div style="width:200px">
-                        <input type="text" id="pincode-input6" value="3631" >
+                        <input type="text" id="pincode-input6" value="3631">
                     </div>
                     <br/>
                     <h4>large inputboxes (using form-control-lg class)</h4>
                     <br/>
                     <div style="width:400px">
-                        <input type="text" id="pincode-input7" value="" >
+                        <input type="text" id="pincode-input7" value="">
+                    </div>
+                    <br/>
+                    <br/>
+                    <h4>in modal dialog</h4>
+                    <br/>
+                    <div style="width:300px">
+                        <button id="modalshow">Open modal</button>
                     </div>
                     <br/>
                     <br/>
                 </div>
             </div>
+
+            <div id="modal-enter-pin" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Pincode input</h4>
+                        </div>
+                        <div class="modal-body" style="width: 200px;">
+                            <input type="text" id="pincode-input8">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         </div>
 
 
