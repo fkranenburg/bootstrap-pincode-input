@@ -62,7 +62,7 @@
                 });
 
                 // show modal once
-                $('#modal-enter-pin').one('shown.bs.modal', function (e) {
+                $('#modal-enter-pin').on('shown.bs.modal', function (e) {
                     $('#pincode-input8').pincodeInput({
                         inputs: 4,
                         complete: function (text) {
@@ -71,7 +71,8 @@
                         }
                     });
                     //autofocus
-                    $('#pincode-input8').pincodeInput().data('plugin_pincodeInput').focus()
+                    $('#pincode-input8').pincodeInput().data('plugin_pincodeInput').clear();
+                    $('#pincode-input8').pincodeInput().data('plugin_pincodeInput').focus();
                 });
             });
     </script>
