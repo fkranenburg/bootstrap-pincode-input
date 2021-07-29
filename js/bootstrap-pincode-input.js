@@ -32,6 +32,8 @@
 		inputtype: 'number',
 		inputmode: 'numeric',
 		inputclass: '',									// add custom class to input tag
+        containerclass: '',                             // add custom class to container block
+        errorclass: 'text-danger',                      // add custom class to error block
 		characterwidth: null, 		// em width of PIN character; defaults to 0.54 (em width of a typical digit), or 0.4 if digits are hidden
 		keydown: function (e) {
 		},
@@ -96,8 +98,7 @@
 
 		},
 		buildInputBoxes: function () {
-			this._container = $('<div />').addClass('pincode-input-container');
-
+			this._container = $('<div />').addClass(this.settings.containerclass + ' pincode-input-container');
 
 			let currentValue = [];
 			let placeholders = [];
@@ -218,7 +219,7 @@
 			this._container.insertBefore(this.element);
 
 			// error box
-			this._error = $('<div />').addClass('text-danger pincode-input-error').insertBefore(this.element);
+			this._error = $('<div />').addClass(this.settings.errorclass + ' pincode-input-error').insertBefore(this.element);
 
 		},
 		enable: function () {
