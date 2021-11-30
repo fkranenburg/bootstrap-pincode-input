@@ -5,7 +5,8 @@
   "main": "js/bootstrap-pincode-input.js",
   "scripts": {
     "start": "lite-server",
-    "prebuild": "npm install"
+    "prebuild": "npm install",
+    "build": "sass --style expanded --no-source-map --no-error-css scss/:css/"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,8 @@
   },
   "homepage": "https://github.com/fkranenburg/bootstrap-pincode-input",
   "devDependencies": {
-    "lite-server": "^2.5.4"
+    "bootstrap": "^5.0.2",
+    "lite-server": "^2.5.4",
+    "sass": "^1.35.2"
   }
 }

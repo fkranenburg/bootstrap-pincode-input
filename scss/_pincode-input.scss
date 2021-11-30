@@ -1,0 +1,106 @@
+$pincode-input-mask-font-family: "pincode-input-mask" !default;
+
+.pincode-input-text-masked {
+    font-family: $pincode-input-mask-font-family;
+}
+
+.pincode-input-container {
+    display: inline-flex;
+    width: 100%;
+
+    input {
+        &.first {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &.mid {
+            border-radius: 0;
+            border-left-width: 0;
+        }
+
+        &.last {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left-width: 0;
+        }
+    }
+}
+
+.pincode-input-text {
+    &,
+    &.form-control {
+        text-align: center;
+        flex-grow: 1;
+    }
+
+    .filled {
+        caret-color: transparent;
+    }
+}
+
+.pincode-input-error {
+    clear: both;
+}
+
+// Touch
+
+.pincode-input-container.touch {
+    .pincode-input-text {
+        &:focus,
+        &:focus.form-control {
+            outline: none;
+            border: 0;
+            box-shadow: none;
+        }
+    }
+
+    .touchwrapper {
+        position: relative;
+        height: 100%;
+        flex-grow: 1;
+
+        .pincode-input-text {
+            display: block;
+            background: transparent;
+            text-align: initial;
+            border: 0;
+            padding-left: 0;
+            overflow: visible;
+            box-shadow: none;
+            transition: none;
+
+            &.noletterspacing {
+                letter-spacing: 0 !important;
+                visibility: hidden;
+            }
+        }
+    }
+
+    .touch-flex{
+        display: flex;
+        align-items: stretch;
+        padding: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .touch-flex-cell {
+        flex-grow: 1;
+        border: $input-border-width solid $input-border-color;
+    }
+
+    .modal-dialog & {
+        .pincode-input-text {
+            z-index: 1042;
+        }
+
+        .touch-flex {
+            z-index: 1041;
+            pointer-events: none;
+        }
+    }
+}
