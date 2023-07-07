@@ -13,7 +13,6 @@
 	-webkit-text-security: disc;
 	-moz-text-security: disc;
 	text-security: disc;
-	font-family: "YourFontName", sans-serif; /* Replace "YourFontName" with the actual name of the font you want to use */
   } 
   .pincode-input-container {
 	display: inline-flex;
