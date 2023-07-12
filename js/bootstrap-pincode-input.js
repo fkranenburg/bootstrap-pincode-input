@@ -32,8 +32,6 @@
 		inputtype: 'number',
 		inputmode: 'numeric',
 		inputclass: '',									// add custom class to input tag
-        containerclass: '',                             // add custom class to container block
-        errorclass: 'text-danger',                      // add custom class to error block
 		characterwidth: null, 		// em width of PIN character; defaults to 0.54 (em width of a typical digit), or 0.4 if digits are hidden
 		keydown: function (e) {
 		},
@@ -98,13 +96,15 @@
 
 		},
 		buildInputBoxes: function () {
-			this._container = $('<div />').addClass(this.settings.containerclass + ' pincode-input-container');
+			this._container = $('<div />').addClass('pincode-input-container');
+
 
 			let currentValue = [];
 			let placeholders = [];
 			let touchplaceholders = "";  // in touch mode we have just 1 big input box, and there is only 1 placeholder in this case
 
 			if (this.settings.placeholders) {
+				console.log(this.settings.placeholders)
 				placeholders = this.settings.placeholders.split(" ");
 				touchplaceholders = this.settings.placeholders.replace(/ /g, "");
 			}
@@ -149,15 +149,21 @@
 				let inputs = this.settings.inputs;
 				let digitEms = this.settings.characterwidth || (this.settings.hidedigits ? 0.4 : 0.54);
 				setTimeout(function () {
-					let digitWidth = parseFloat(getComputedStyle(input.get(0)).fontSize) * digitEms;
-					let spaceWidth = input.innerWidth() / inputs;
-					let spaceBetweenChars = spaceWidth - digitWidth;
-					$(input).css({
-						"margin-left": spaceBetweenChars / 2 + "px",
-						"width": "110%",  //this prevents pincode 'jumping'
-						"letter-spacing": spaceBetweenChars + "px"
-					});
-				}, 0);
+					let digitWidth = parseFloat(getComputedStyle(input[0]).fontSize) * digitEms;
+					let checkInterval = setInterval(function () {
+					  if (input[0].offsetWidth !== 0) {
+						clearInterval(checkInterval);
+						let spaceWidth = input[0].offsetWidth / inputs;
+						console.log(input[0].offsetWidth);
+						let spaceBetweenChars = spaceWidth - digitWidth ;
+						$(input).css({
+						  marginLeft: spaceWidth / 2,
+						  width: "100%",
+						  letterSpacing: spaceBetweenChars + "px"
+						});
+					  }
+					}, 100);
+				  }, 0);
 
 
 
@@ -219,7 +225,7 @@
 			this._container.insertBefore(this.element);
 
 			// error box
-			this._error = $('<div />').addClass(this.settings.errorclass + ' pincode-input-error').insertBefore(this.element);
+			this._error = $('<div />').addClass('text-danger pincode-input-error').insertBefore(this.element);
 
 		},
 		enable: function () {
